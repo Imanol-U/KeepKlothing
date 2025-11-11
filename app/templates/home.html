@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block extraCss %}
+<link rel="stylesheet" href="{% static 'css/homeStyle.css' %}">
+{% endblock %}
+
+{% block content %}
+<main>
+    <div id="main-imgs">
+        <div class="gender-img">
+            <img src="https://images.pexels.com/photos/874158/pexels-photo-874158.jpeg" alt="Categoría Hombre">
+        </div>
+        <div class="gender-img">
+            <img src="https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg" alt="Categoría Mujer">
+        </div>
+    </div>
+    <section class="productsDisplay">
+        <h2>En Tendencia</h2>
+        {% for producto in lista_productos %}
+
+        {% endfor %}
+    </section>
+    <section class="productsDisplay">
+        <h2>Más Vendidos</h2>
+            {% for producto in lista_productos %}
+                
+            {% endfor %}
+    </section>
+    <section id="Categorías">
+
+    </section>
+</main>
+{% endblock %}

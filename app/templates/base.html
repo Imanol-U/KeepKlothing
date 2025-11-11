@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KeepKlothing</title>
+    <link rel="stylesheet" href="{% static 'css/baseStyle.css' %}">
+    {% block extraCss %}{% endblock %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <ul>
+            <li><a href="">Inicio</a></li>
+            <li><a href="">Hombre</a></li>
+            <li><a href="">Mujer</a></li>
+            <li><a href="">Niños</a></li>
+            <li><a href="">Contacto</a></li>
+        </ul>
+    </header>
+    {% block content %}
+
+    {% endblock %}
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section brand-info">
+                <h3>KeepKlothing.</h3> <p>Tu dosis diaria de estilo. Diseñamos prendas modernas y versátiles que te permiten destacar y expresar tu personalidad única. Viste la tendencia.</p>
+            </div>
+
+            <div class="footer-section links">
+                <h4>Secciones</h4>
+                <ul>
+                    <li><a href="#">Hombre</a></li>
+                    <li><a href="#">Mujer</a></li>
+                    <li><a href="#">Niños</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section contact-details">
+                <h4>Contacto</h4>
+                <p><i class="fas fa-map-marker-alt"></i> KeepKlothing, <br>Donostia, Guipuzkoa</p>
+                <p><i class="fas fa-envelope"></i> contact@KeepKlothing.com</p>
+                <p><i class="fas fa-phone-alt"></i> +34 943 53 53 525</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

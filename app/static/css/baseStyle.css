@@ -1,0 +1,120 @@
+:root {
+    --dark-grey: #2e2e2e;
+    --light-grey-text: #b0b0b0;
+    --accent-color: #2196f3;
+    --social-bg: #444444;
+    --social-icon-color: #ffffff;
+    --member-icon-color: #26a69a;
+}
+
+body{
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.242);
+    padding: 10px 0px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: white; 
+}
+
+header ul{
+    display: flex;
+    gap: 30px;
+    list-style: none;
+}
+
+header a{
+    text-decoration: none;
+    font-family: "Roboto";
+    font-weight: 300;
+}
+
+footer {
+    background-color: var(--dark-grey);
+    color: var(--light-grey-text);
+    font-family: Arial, sans-serif;
+    padding: 40px 0 20px 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer-section {
+    flex: 1;
+    min-width: 220px;
+    margin: 15px;
+    line-height: 1.6;
+}
+
+.footer-section.brand-info {
+    flex: 1.5;
+}
+
+.footer-logo {
+    max-width: 120px;
+    margin-bottom: 15px;
+    filter: brightness(1.2);
+}
+
+.footer-section.brand-info p {
+    font-size: 0.9em;
+    margin-bottom: 20px;
+}
+
+.footer-section h4 {
+    color: #ffffff;
+    font-size: 1em;
+    margin-bottom: 20px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.footer-section.links ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section.links ul li {
+    margin-bottom: 10px;
+}
+
+.footer-section.links ul li a {
+    color: var(--light-grey-text);
+    text-decoration: none;
+    font-size: 0.9em;
+    transition: color 0.3s;
+}
+
+.footer-section.links ul li a:hover {
+    color: #ffffff;
+}
+
+.footer-section.contact-details p {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+}
+
+.footer-section.contact-details i {
+    color: var(--accent-color);
+    margin-right: 10px;
+    font-size: 1.1em;
+    margin-top: 2px;
+}
