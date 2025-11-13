@@ -1,0 +1,12 @@
+#display-productos {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+
+}
+.producto {
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    padding: 10px;
+
+}

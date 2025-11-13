@@ -1,6 +1,8 @@
 from django.db import models
 from django.core.validators import MinValueValidator,MaxValueValidator
 from decimal import Decimal
+from django.utils.timezone import now
+
 
 
 

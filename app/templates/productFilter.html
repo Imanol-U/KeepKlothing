@@ -1,13 +1,10 @@
-{% extends 'base.html'}
-{% block extraCss %}
-<link rel="stylesheet" href="{% static 'css/filterStyle.css' %}">
-{% endblock %}
+{% extends 'base.html'%}
 {% block content %}
-
+<link rel="stylesheet" href="filterStyle.css">
 <main>
     <div id="display-productos">
-        {% for producto in lista_Productos%}
-        
+        {% for producto in lista_productos%}
+        <div class="producto"><strong>producto.nombre</strong></div>
         {% endfor %}
     </div>
 </main>
