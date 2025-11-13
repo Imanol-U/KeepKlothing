@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.db.models import Sum
 from django.http import HttpResponse
-from .models import Producto, ProductoCompra
+from .models import Producto, ProductoCompra, Categoria
 
 # Create your views here.
 
@@ -18,3 +18,13 @@ def home(request):
         }
 
     return render(request, "home.html", context)
+
+def filters(request, nombre_categoria):
+    categoria = Categoria.objects.get(nombre = nombre_categoria)
+    lista_productos = categoria.productos.all()  # Aqui uso el related name "productos" de la relacion Categoria-Producto
+    context = {
+        'categoria': categoria,
+        'productos': lista_productos
+    }
+    return render(request, 'productFilter.html', context)
+
