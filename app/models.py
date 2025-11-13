@@ -1,6 +1,19 @@
 from django.db import models
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator,MaxValueValidator
 from decimal import Decimal
+
+
+
+class Marca(models.Model):
+    id_marca = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=150,unique=True)
+    descripcion = models.TextField(blank=True)
+
+    class Meta:
+        db_table = "MARCA"
+
+    def __str__(self):
+        return self.nombre
 
 class Usuario(models.Model):
     id_usuario = models.AutoField(primary_key=True)
@@ -12,7 +25,7 @@ class Usuario(models.Model):
     fecha_registro = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        db_table = "USUARIOS"
+        db_table = "USUARIO"
 
     def __str__(self):
         return f"{self.nombre} <{self.email}>"
@@ -41,8 +54,10 @@ class Producto(models.Model):
         max_digits=10, decimal_places=2,
         validators=[MinValueValidator(Decimal("0.00"))]
     )
+    marca = models.ForeignKey(Marca,on_delete= models.PROTECT, related_name="productos")
     stock = models.PositiveIntegerField(validators=[MinValueValidator(0)])
     imagen_url = models.URLField(blank=True)
+    fecha_alta = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = "PRODUCTO"
@@ -112,4 +127,31 @@ class ProductoCompra(models.Model):
         unique_together = (("compra", "producto"),)
 
     def __str__(self):
-        return f"{self.producto} x{self.cantidad} (Compra #{self.compra_id})"
+        return f"{self.producto} x {self.cantidad} (Compra #{self.compra_id})"
+
+class Resenia(models.Model):
+    id_resenia= models.AutoField(primary_key=True)
+    usuario= models.ForeignKey(
+        Usuario, 
+        on_delete=models.CASCADE,
+        related_name="resenias")
+    producto= models.ForeignKey(
+        Producto,
+        on_delete= models.CASCADE,
+        related_name="resenias"
+    )
+    estrellas= models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(0), MaxValueValidator(5)]
+    )
+
+    comentario= models.TextField(blank=True)
+    fecha_resenia= models.DateTimeField(auto_now_add=True)
+
+    class Meta: 
+        db_table= "RESENIA"
+        versobe_name_plural = "resenias"
+        unique_together= (("usuario", "producto"))
+    
+    def __str__(self):
+        return f"Resenia de {self.usuario.nombre} sobre {self.producto.nombre} ({self.puntuacion}/5)"
+ 
