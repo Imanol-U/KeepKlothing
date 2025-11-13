@@ -19,9 +19,15 @@
     </div>
     <section class="productsDisplay">
         <h2>En Tendencia</h2>
-        {% for producto in lista_productos %}
-
-        {% endfor %}
+        <div>
+            {% for item in top_productos %}
+            <div class="tarjetaTopProductos">
+                <strong>{{ item.producto__nombre }}</strong> 
+                (Vendidos: {{ item.total_vendido }} unidades) - 
+                Precio: ${{ item.producto__precio }}
+            </div>
+            {% endfor %}
+        </div>
     </section>
     <section class="productsDisplay">
         <h2>Más Vendidos</h2>
