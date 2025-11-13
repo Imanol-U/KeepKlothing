@@ -1,0 +1,39 @@
+.marca-info-contenedor {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 80px auto;
+    padding: 20px;
+    max-width: 900px;
+    background-color: black;
+    color: white;
+    border-radius: 20px;
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.2);
+}
+
+.marca-logo-img {
+    width: 200px;
+    height: auto;
+    margin-bottom: 25px;
+}
+
+.marca-nombre {
+    font-size: 3em;
+    font-weight: bold;
+    letter-spacing: 3px;
+    color: white;
+}
+
+.marca-eslogan {
+    font-style: italic;
+    color: cyan;
+    margin-bottom: 20px;
+}
+
+.marca-descripcion {
+    color: whitesmoke;
+    line-height: 1.6;
+    font-size: 1.1em;
+    max-width: 700px;
+}
