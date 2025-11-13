@@ -149,7 +149,7 @@ class Resenia(models.Model):
 
     class Meta: 
         db_table= "RESENIA"
-        versobe_name_plural = "resenias"
+        verbose_name_plural = "resenias"
         unique_together= (("usuario", "producto"))
     
     def __str__(self):
