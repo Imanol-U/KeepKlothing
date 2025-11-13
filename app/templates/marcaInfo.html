@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    KeepKlothing - Información de la marca
+{% endblock %}
+
+{% block extra_head %}
+    <link rel="icon" type="image/png" href="{% static 'img/logo.png' %}">
+{% endblock %}
+
+{% block content %}
+<div class="marca-info-container">
+    <div class="marca-logo">
+        <img src="{% static 'img/logo.png' %}" alt="Logo de KeepKlothing" class="marca-logo-img">
+    </div>
+
+    <div class="marca-text">
+        <h1 class="marca-name">KEEP KLOTHING</h1>
+        <h3 class="marca-slogan">Define your edge.</h3>
+        <p class="marca-description">
+            Keep Klothing es una marca de ropa urbana premium que fusiona el estilo callejero con un toque futurista.
+            Nuestras prendas están diseñadas para quienes buscan destacar con autenticidad, combinando sostenibilidad y diseño moderno.
+        </p>
+    </div>
+</div>
+{% endblock %}
