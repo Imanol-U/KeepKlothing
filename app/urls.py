@@ -6,5 +6,6 @@ urlpatterns = [
     path('', views.home, name="home"),
     path("filters/<str:nombre_categoria>", views.filters, name="filters"),
     path("productos/<int:id_producto>/", views.producto_detalle, name="producto_detalle"),
+    path("marca/", views.marca_info, name="marca-info"),
 
 ]
