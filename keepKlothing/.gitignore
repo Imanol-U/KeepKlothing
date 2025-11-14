@@ -1,0 +1,8 @@
+# Ignorar carpetas __pycache__ en todo el proyecto
+__pycache__/
+
+# Ignorar archivos compilados de Python
+*.py[cod]
+
+# Opcional: ignorar también carpetas pycache en subdirectorios
+**/__pycache__/
