@@ -22,10 +22,12 @@
             <p id="logo">KeepKlothing</p>
             <ul>
                 <li><a href="">Inicio</a></li>
-                <li><a href="Camisetas">Camisetas</a></li>
-                <li><a href="Sudaderas">Sudaderas</a></li>
-                <li><a href="Pantalones">Pantalones</a></li>
-                <li><a href="Calzado">Calzado</a></li>
+                <li><a href="{% url 'filters' 'Camisetas' %}">Camisetas</a></li>
+                <li><a href="{% url 'filters' 'Sudaderas' %}">Sudaderas</a></li>
+                <li><a href="{% url 'filters' 'Pantalones' %}">Pantalones</a></li>
+                <li><a href="{% url 'filters' 'Calzado' %}">Calzado</a></li>
+                <!--urls absolutas para que funcionen siempre-->
+
             </ul>
             <!-- Hay que agregar JS para que la SearchBar funcione-->
             <div id="actions">
