@@ -34,9 +34,7 @@
                     <h3 class="productName">
                         <a href="#">{{ producto.producto__nombre }}</a>
                     </h3>
-                    <p class="productPrice">${{ producto.producto__precio }}</p>
-                    <small class="soldCount">Vendidos: **{{ producto.total_vendido }}**</small>
-                    <button class="addToCartButton">Añadir al Carrito</button>
+                    <p class="productPrice">{{ producto.producto__precio }}€</p>
                 </div>
             </div>
             {% endfor %}
@@ -44,10 +42,10 @@
     </section>
     <section class="productsDisplay">
         <div class="info-section">
-            <h2>Los Más Vendidos</h2>
-            <p>Nuestros bestsellers, los productos más amados por la comunidad.</p>
+            <h2>Los más vendidos</h2>
+            <p>Descubre cuales son los últimos productos que más están gustando en la comunidad.</p>
         </div>
-        </div class="productListDisplay">
+        <div class="productListDisplay">
             {% for producto in mas_vendidos %}
             <div class="productCard">
                 <a href="#">
@@ -59,9 +57,7 @@
                     <h3 class="productName">
                         <a href="#">{{ producto.producto__nombre }}</a>
                     </h3>
-                    <p class="productPrice">${{ producto.producto__precio }}</p>
-                    <small class="soldCount">Vendidos: **{{ producto.total_vendido }}**</small>
-                    <button class="addToCartButton">Añadir al Carrito</button>
+                    <p class="productPrice">{{ producto.producto__precio }}€</p>
                 </div>
             </div>
             {% endfor %}

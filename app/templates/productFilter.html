@@ -3,8 +3,8 @@
 <link rel="stylesheet" href="filterStyle.css">
 <main>
     <div id="display-productos">
-        {% for producto in lista_productos%}
-        <div class="producto"><strong>producto.nombre</strong></div>
+        {% for producto in productos%}
+            <div class="producto"><strong>{{producto.nombre}}</strong></div>
         {% endfor %}
     </div>
 </main>
