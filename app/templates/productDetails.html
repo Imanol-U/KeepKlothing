@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extraCss %}
+<link rel="stylesheet" href="{% static 'css/productDetails.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="product-detail">
+    <div class="product-main">
+        <div class="product-image">
+            {% if producto.imagen_url %}
+                <img src="{{ producto.imagen_url }}" alt="{{ producto.nombre }}">
+            {% else %}
+                <img src="{% static 'img/no-image.png' %}" alt="Sin imagen disponible">
+            {% endif %}
+        </div>
+        <div class="product-info">
+            <h1>{{ producto.nombre }}</h1>
+
+            <p class="brand">
+                <strong>Marca:</strong> {{ producto.marca.nombre }}
+            </p>
+
+            <p class="category">
+                <strong>Categoría:</strong> {{ producto.categoria.nombre }}
+            </p>
+
+            <p class="price">
+                <strong>Precio:</strong> {{ producto.precio }} €
+            </p>
+
+            <p class="stock">
+                <strong>Stock:</strong>
+                {% if producto.stock > 0 %}
+                    En stock ({{ producto.stock }} unidades)
+                {% else %}
+                    Sin stock
+                {% endif %}
+            </p>
+
+            {% if rating_medio %}
+                <p class="rating">
+                    ⭐ {{ rating_medio|floatformat:1 }} / 5
+                </p>
+            {% endif %}
+
+            <div class="description">
+                <h3>Descripción</h3>
+                <p>{{ producto.descripcion|linebreaks }}</p>
+            </div>
+
+
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="product-reviews">
+        <h2>Reseñas</h2>
+
+        {% if resenias %}
+            <ul>
+                {% for r in resenias %}
+                    <li>
+                        <strong>{{ r.usuario.nombre }}</strong>
+                        – {{ r.estrellas }} / 5 ⭐
+                        <br>
+                        <small>{{ r.fecha_resenia|date:"d/m/Y H:i" }}</small>
+                        {% if r.comentario %}
+                            <p>{{ r.comentario }}</p>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Este producto todavía no tiene reseñas.</p>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}

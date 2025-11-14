@@ -1,0 +1,89 @@
+/* Usa la misma fuente global que baseStyle */
+.product-detail {
+    max-width: 1100px;
+    margin: 120px auto 40px auto; /* distancia por header fijo */
+    padding: 20px;
+    font-family: "Roboto", sans-serif;
+    color: var(--dark-grey);
+}
+
+/* Layout principal */
+.product-main {
+    display: flex;
+    gap: 50px;
+    align-items: flex-start;
+}
+
+/* Imagen del producto */
+.product-image img {
+    max-width: 420px;
+    border-radius: 12px;
+    object-fit: cover;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    padding-top: 20;
+}
+
+/* Información */
+.product-info h1 {
+    margin: 0 0 10px 0;
+    font-size: 32px;
+    font-family: "Montserrat", sans-serif;
+    letter-spacing: -0.5px;
+    font-weight: 700;
+    color: var(--dark-grey);
+}
+
+.product-info p {
+    margin: 6px 0;
+    font-size: 16px;
+}
+
+/* Precio en color principal KeepKlothing */
+.price {
+    margin-top: 10px;
+    font-size: 26px;
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+/* Descripción */
+.description h3 {
+    margin-top: 20px;
+    font-size: 20px;
+    font-family: "Montserrat", sans-serif;
+    color: var(--dark-grey);
+}
+
+.description p {
+    margin-top: 6px;
+    line-height: 1.6;
+}
+
+/* Reseñas */
+.product-reviews {
+    margin-top: 50px;
+}
+
+.product-reviews h2 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    font-family: "Montserrat", sans-serif;
+    color: var(--dark-grey);
+}
+
+.product-reviews ul {
+    padding: 0;
+    list-style: none;
+}
+
+.product-reviews li {
+    background: #f1f1f1;
+    padding: 15px;
+    margin: 12px 0;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+}
+
+.product-reviews li strong {
+    color: var(--dark-grey);
+}
