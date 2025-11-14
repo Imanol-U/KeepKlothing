@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from django.db.models import Sum
+from django.shortcuts import render,get_object_or_404
+from django.db.models import Sum, Avg
 from django.utils import timezone
 from datetime import timedelta
 from django.http import HttpResponse
@@ -45,4 +45,16 @@ def filters(request, nombre_categoria):
         'productos': lista_productos
     }
     return render(request, 'productFilter.html', context)
+def producto_detalle(request, id_producto):
+    producto = get_object_or_404(Producto, pk=id_producto)
 
+    # Si quieres mostrar reseñas y media de estrellas:
+    resenias = producto.resenias.select_related("usuario").all()
+    rating_medio = resenias.aggregate(Avg("estrellas"))["estrellas__avg"]
+
+    context = {
+        "producto": producto,
+        "resenias": resenias,
+        "rating_medio": rating_medio,
+    }
+    return render(request, "productDetails.html", context)
