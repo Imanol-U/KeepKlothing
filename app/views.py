@@ -59,3 +59,44 @@ def producto_detalle(request, id_producto):
         "rating_medio": rating_medio,
     }
     return render(request, "productDetails.html", context)
+
+def marca_info(request):
+    # Productos destacados del último mes (puedes cambiar el rango o el orden)
+    fecha_hace_30_dias = timezone.now() - timedelta(days=30)
+    productos_qs = (
+        ProductoCompra.objects
+        .filter(compra__fecha__gte=fecha_hace_30_dias)
+        .values(
+            'producto__id_producto',
+            'producto__nombre',
+            'producto__imagen_url',
+            'producto__precio'
+        )
+        .annotate(total_vendido=Sum('cantidad'))
+        .order_by('-total_vendido')
+    )
+
+    productos = [
+        {
+            "id": p['producto__id_producto'],
+            "nombre": p['producto__nombre'],
+            "imagen": p['producto__imagen_url'],
+            "precio": p['producto__precio'],
+            "vendido": p['total_vendido'],
+        }
+        for p in productos_qs
+    ]
+
+    marca = {
+        "nombre": "Keep Klothing",
+        "slogan": "Style in motion.",
+        "descripcion": (
+            "Keep Klothing es una marca de ropa urbana premium que fusiona el estilo callejero "
+            "con un toque futurista. Nuestras prendas están diseñadas para quienes buscan destacar "
+            "con autenticidad, combinando sostenibilidad y diseño moderno."
+        ),
+        "logo": "img/logo.png",
+        "productos": productos,
+    }
+
+    return render(request, "marcaInfo.html", {"marca": marca})
