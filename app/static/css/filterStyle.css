@@ -10,3 +10,15 @@
     padding: 10px;
 
 }
+.headerCat{
+    background-color: #222;
+    display: flex;
+    justify-content: center;
+    border: 5px solid;
+    border-color: #ccc
+}
+.headerCat h2{
+    font: bold;
+    color: #ccc;
+    
+}

@@ -1,7 +1,11 @@
 {% extends 'base.html'%}
 {% block content %}
-<link rel="stylesheet" href="filterStyle.css">
+{%load static%}
+<link rel="stylesheet" href="{% static 'css/filterStyle.css' %}">
 <main>
+    <header class="headerCat">
+        <h2>{{categoria}}</h2>
+    </header>
     <div id="display-productos">
         {% for producto in productos%}
             <div class="producto"><strong>{{producto.nombre}}</strong></div>
