@@ -2,27 +2,41 @@
 {% load static %}
 
 {% block title %}
-    KeepKlothing - Información de la marca
+{{ marca.nombre }} 
+- Información de la marca
 {% endblock %}
 
 {% block extra_head %}
-    <link rel="icon" type="image/png" href="{% static 'img/logo.png' %}">
+    <link rel="icon" type="image/png" href="{% static marca.logo %}">
     <link rel="stylesheet" href="{% static 'css/marcaStyle.css' %}">
 {% endblock %}
 
 {% block content %}
 <div class="marca-info-container">
     <div class="marca-logo">
-        <img src="{% static 'img/logo.png' %}" alt="Logo de KeepKlothing" class="marca-logo-img">
+        <img src="{% static marca.logo %}" alt="Logo de {{marca.nombre}}" class="marca-logo-img">
     </div>
 
-    <div class="marca-text">
-        <h1 class="marca-name">KEEP KLOTHING</h1>
-        <h3 class="marca-slogan">Define your edge.</h3>
-        <p class="marca-description">
-            Keep Klothing es una marca de ropa urbana premium que fusiona el estilo callejero con un toque futurista.
-            Nuestras prendas están diseñadas para quienes buscan destacar con autenticidad, combinando sostenibilidad y diseño moderno.
+    <div class="marca-texto">
+        <h1 class="marca-name">{{ marca.nombre|upper }}</h1>
+        <h3 class="marca-slogan">{{ marca.slogan }}</h3>
+        <p class="marca-description">{{ marca.descripcion }}
+
         </p>
     </div>
+    <div class="marca-productos">
+        <h2>Productos destacados</h2>
+        <ul>
+          {% for p in marca.productos %}
+          <li>
+            {% if p.imagen %}
+            <img src="{% static p.imagen %}" alt="{{ p.nombre }}" style="height:40px;vertical-align:middle;margin-right:8px">
+            {% endif %}
+            {{ p.nombre }} — {{ p.precio }} {% if p.vendido %} ({{ p.vendido }} vendidos)
+            {% endif %}
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
 </div>
 {% endblock %}
