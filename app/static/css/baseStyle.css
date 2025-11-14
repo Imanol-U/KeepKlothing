@@ -10,31 +10,133 @@
 body{
     margin: 0;
     padding: 0;
+    font-family: Arial, sans-serif;
+
 }
 
 header {
+    font-family: Arial, sans-serif;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#sale-ad {
+    background-color: #222;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px 18px;
+    font-size: 14px;
+}
+
+#sale-ad p {
+    margin-right: 22px;
+    font-size: 15px;
+    align-items: center;
+}
+
+#sale-ad a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    border-bottom: 2px solid white;
+}
+
+nav {
     display: flex;
     justify-content: space-between;
-    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.242);
-    padding: 10px 0px;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1000;
-    background-color: white; 
+    align-items: center;
+    padding: 15px 20px;
+    background-color: white;
 }
 
-header ul{
-    display: flex;
-    gap: 30px;
+#logo {
+    font-size: 28px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin: 0 40px 0 0;
+}
+
+nav ul {
     list-style: none;
+    display: flex;
+    padding: 0;
+    margin: 0;
 }
 
-header a{
-    text-decoration: none;
-    font-family: "Roboto";
-    font-weight: 300;
+nav ul li {
+    margin-right: 30px;
 }
+
+nav ul a {
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 5px 0;
+    transition: color 0.3s;
+    text-transform: uppercase;
+}
+
+nav ul a:hover {
+    color: #000;
+}
+
+#actions {
+    display: flex;
+    align-items: center;
+}
+
+#cart-icon{
+    color: #000;
+}
+
+#search-icon{
+    color: #000;
+}
+
+#searchBar {
+    display: flex;
+    align-items: center;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    padding: 8px 12px;
+    width: 300px;
+    margin-right: 15px;
+}
+
+#searchBar input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 15px;
+    margin-left: 8px;
+    width: 100%;
+}
+
+#searchBar span {
+    color: #666;
+    font-size: 18px;
+}
+
+#cart-btn {
+    color: #333;
+    text-decoration: none;
+    font-size: 24px;
+    margin-left: 15px;
+}
+
+#sign-in-btn {
+    background-color: #222;
+    color: white;
+    text-decoration: none;
+    padding: 15px 20px;
+    margin-left: 20px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
 
 footer {
     background-color: var(--dark-grey);
