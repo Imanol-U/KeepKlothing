@@ -17,7 +17,7 @@ def home(request):
             'producto__id_producto',
             'producto__nombre',
             'producto__imagen_url',
-            'producto__precio' #
+            'producto__precio' 
         ).annotate(
             total_vendido=Sum('cantidad')
         ).order_by('-total_vendido')[:3]
@@ -25,7 +25,8 @@ def home(request):
     productos_mas_vendidos_total = ProductoCompra.objects.values(
             'producto__id_producto',
             'producto__nombre',
-            'producto__imagen_url'
+            'producto__imagen_url',
+            'producto__precio'
         ).annotate(
             total_vendido=Sum('cantidad')
         ).order_by('-total_vendido')[:3]
