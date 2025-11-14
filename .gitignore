@@ -22,8 +22,6 @@ Thumbs.db
 htmlcov/
 .nox/
 .idea/
-*.sqlite
-*.sqlite3
 
 # Archivos generados por paquetes de instalación
 dist/
