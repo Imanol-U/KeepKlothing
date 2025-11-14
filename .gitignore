@@ -1,0 +1,38 @@
+# ───────────── Python / Django ─────────────
+_pycache_/
+app/_pycache_/
+*.py[cod]
+*$py.class
+*.so
+
+# ───────────── Entorno virtual ─────────────
+venv/
+.venv/
+ENV/
+env/
+entornoKeepKlothing/
+
+# ───────────── Variables de entorno ─────────────
+*.env
+.env.*
+!.env.example
+
+# ───────────── Archivos generados ─────────────
+*.log
+local_settings.py
+
+staticfiles/
+
+# ───────────── IDEs / SO ─────────────
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# ───────────── Pruebas / compilación ─────────────
+.pytest_cache/
+.mypy_cache/
+.tox/
+build/
+dist/
+*.egg-info/
