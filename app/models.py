@@ -58,7 +58,7 @@ class Producto(models.Model):
     )
     marca = models.ForeignKey(Marca,on_delete= models.PROTECT, related_name="productos")
     stock = models.PositiveIntegerField(validators=[MinValueValidator(0)])
-    imagen_url = models.URLField(blank=True)
+    imagen_url = models.CharField(blank=True)
     fecha_alta = models.DateTimeField(auto_now_add=True)
 
     class Meta:
