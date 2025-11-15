@@ -29,7 +29,7 @@
         </a>
         <div class="cardDetails">
            <h3 class="productName">
-              <a href="#">{{ producto.nombre }}</a>
+              <a href="{% url 'producto_detalle' producto.id_producto %}">{{ producto.nombre }}</a>
             </h3>
             <p class="productPrice">{{ producto.precio }}€</p>
         </div>

@@ -7,7 +7,8 @@ class ReviewForm(ModelForm):
         fields = ['estrellas','comentario']
 
         widgets = {
-            'comentario' : Textarea(attrs={"rows":4})
+            'comentario' : Textarea(attrs={"rows":4, "style": "resize:none"})
+
         }
 
         labels = {

@@ -2,8 +2,9 @@ from django.shortcuts import render,get_object_or_404,redirect
 from django.db.models import Sum, Avg
 from django.utils import timezone
 from datetime import timedelta
+from django.contrib import messages
 from django.http import HttpResponse
-from .models import Producto, ProductoCompra, Categoria, Usuario, Marca
+from .models import Producto, ProductoCompra, Categoria, Usuario, Marca, Resenia
 from .forms import ReviewForm
 
 
@@ -22,7 +23,7 @@ def home(request):
             'producto__precio' 
         ).annotate(
             total_vendido=Sum('cantidad')
-        ).order_by('-total_vendido')[:3]
+        ).order_by('-total_vendido')[:4]
         
     productos_mas_vendidos_total = ProductoCompra.objects.values(
             'producto__id_producto',
@@ -31,7 +32,7 @@ def home(request):
             'producto__precio'
         ).annotate(
             total_vendido=Sum('cantidad')
-        ).order_by('-total_vendido')[:3]
+        ).order_by('-total_vendido')[:4]
     
     context = {
             'productos_tendencia': top_productos_tendencia,
@@ -41,7 +42,7 @@ def home(request):
     return render(request, "home.html", context)
 
 def filters(request, nombre_categoria):
-    categoria = Categoria.objects.get(nombre = nombre_categoria)
+    categoria = get_object_or_404(Categoria, nombre = nombre_categoria)
     lista_productos = categoria.productos.all()  # Aqui uso el related name "productos" de la relacion Categoria-Producto
     context = {
         'categoria': categoria,
@@ -52,15 +53,21 @@ def filters(request, nombre_categoria):
 def producto_detalle(request, id_producto):
     producto = get_object_or_404(Producto, pk=id_producto)
 
+    default_user = Usuario.objects.get(pk= 2)
+
+    review_exists = Resenia.objects.filter(usuario=default_user,producto=producto).exists()
+
     if request.method == 'POST':
-        form = ReviewForm(request.POST)
-        if form.is_valid():
-            default_user = Usuario.objects.get(pk = 2)
-            resenia = form.save(commit=False)
-            resenia.producto = producto
-            resenia.usuario = default_user #Aquí despues agregar autenticación
-            resenia.save()
+        if review_exists:
             return redirect('producto_detalle', id_producto=producto.pk)
+        else:
+            form = ReviewForm(request.POST)
+            if form.is_valid():
+                resenia = form.save(commit=False)
+                resenia.producto = producto
+                resenia.usuario = default_user #Aquí despues agregar autenticación
+                resenia.save()
+                return redirect('producto_detalle', id_producto=producto.pk)
     else:
         form = ReviewForm()
 
@@ -72,12 +79,13 @@ def producto_detalle(request, id_producto):
         "producto": producto,
         "resenias": resenias,
         "rating_medio": rating_medio,
-        "form": form
+        "form": form,
+        "allowReview" : not review_exists
     }
     return render(request, "productDetails.html", context)
 
 def marca_info(request, nombre):
-    marca = Marca.objects.get(nombre = nombre)
+    marca = get_object_or_404(Marca,nombre = nombre)
     productos = marca.productos.all()
 
     context = {"marca": marca,

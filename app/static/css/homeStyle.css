@@ -1,29 +1,55 @@
-#main-imgs{
+#main-image {
+    position: relative; 
     width: 100%;
-    display: flex;
-    height: 1000px;
-}
-
-.gender-img{
-    width: 50%;
-    position: relative;
+    height: 600px;
     overflow: hidden;
-    height: 100%;
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
 }
 
-.gender-img img{
-    object-fit: cover;
+#main-image img {
     width: 100%;
-    height: 100%;
-    object-position: center;
-    transition: 0.3s;
-    cursor: pointer;
+    height: auto;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    filter: blur(5px);
 }
 
-.gender-img img:hover{
-    transform: scale(1.05);
-    opacity: 0.8;
+#main-image h2,
+#main-image button {
+    position: relative; 
+    z-index: 2;
+    margin: 10px 0;
 }
+
+#main-image h2{
+    font-size: 72px;
+    color: rgb(255, 255, 255);
+    text-shadow: 2px 2px 50px rgb(50, 50, 50);
+    font-weight: bold;
+}
+
+#main-image button{
+    padding: 10px 30px;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 16px;
+    color: white;
+    cursor: pointer;
+    background-color: rgba(54, 54, 54, 0.374);
+    border: none;
+    transition: 0.3s;
+}
+
+#main-image button:hover{
+    box-shadow: 0px 0px 15px rgb(42, 42, 42);
+}
+
 
 .productsDisplay{
     padding: 0px 150px;
@@ -36,6 +62,7 @@
 
 .info-section h2{
     margin-bottom: 10px;
+    font-size: 32px;
 }
 
 .info-section p{
@@ -45,8 +72,9 @@
 }
 
 .productListDisplay{
-    display: flex;
-    gap: 30px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
 }
 
 .productCard {

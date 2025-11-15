@@ -64,14 +64,16 @@
     </div>
 
     <hr>
-
+    {% if allowReview %}
     <h2>Escribe tu reseña</h2>
     <form class="review-form" method="post">
         {% csrf_token %}
         {{form.as_p}}
-        <button type="submit">Enviar Reseña</button>
+        <button id="submit-review" type="submit">Enviar Reseña</button>
     </form>
-
+    {% else %}
+        <p id="review-alert">Gracias por tu opinión! Solo puedes dejar una reseña por producto.</p>
+    {% endif %}
     <hr>
 
     <div class="product-reviews">

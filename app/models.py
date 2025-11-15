@@ -157,5 +157,5 @@ class Resenia(models.Model):
         unique_together= (("usuario", "producto"))
     
     def __str__(self):
-        return f"Resenia de {self.usuario.nombre} sobre {self.producto.nombre} ({self.puntuacion}/5)"
+        return f"Resenia de {self.usuario.nombre} sobre {self.producto.nombre} ({self.estrellas}/5)"
  

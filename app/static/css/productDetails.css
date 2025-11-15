@@ -50,6 +50,10 @@ hr{
     margin: 20px 0;
 }
 
+#review-alert{
+    font-size: 24px;
+}
+
 .brand a{
     text-decoration: none;
 }
@@ -136,3 +140,12 @@ hr{
     background-color: rgb(255, 255, 156);
 }
 
+#submit-review{
+    padding: 10px 20px;
+    border: none;
+    background: var(--dark-grey);
+    border-radius: 16px;
+    color: white;
+    cursor: pointer;
+    margin-left: 140px;
+}
