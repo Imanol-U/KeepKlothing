@@ -25,9 +25,9 @@
         <div class="productListDisplay">
             {% for producto in productos_tendencia %}
             <div class="productCard">
-                <a href="#">
+                <a href="{% url 'producto_detalle' producto.producto__id_producto %}">
                     <div class="productImage">
-                        <img src="{{ producto.producto__imagen_url }}" alt="" loading="lazy">
+                        <img src="" alt="" loading="lazy">
                     </div>
                 </a>
                 <div class="cardDetails">
