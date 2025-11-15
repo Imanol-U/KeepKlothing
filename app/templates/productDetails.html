@@ -10,7 +10,7 @@
     <div class="product-main">
         <div class="product-image">
             {% if producto.imagen_url %}
-                <img src="{{ producto.imagen_url }}" alt="{{ producto.nombre }}">
+                <img src="{% static producto.imagen_url %}" alt="{{ producto.nombre }}">
             {% else %}
                 <img src="{% static 'img/no-image.png' %}" alt="Sin imagen disponible">
             {% endif %}
@@ -18,16 +18,22 @@
         <div class="product-info">
             <h1>{{ producto.nombre }}</h1>
 
-            <p class="brand">
-                <strong>Marca:</strong> {{ producto.marca.nombre }}
+            <p class="price">
+                {{ producto.precio }} €
             </p>
+
+            {% if rating_medio %}
+                <p class="rating">
+                    ⭐ {{ rating_medio|floatformat:1 }} / 5
+                </p>
+            {% endif %}
+
+            <hr>
+
+            <p class="brand"><strong>Marca:</strong> <a href="{% url 'marca' producto.marca.nombre%}">{{ producto.marca.nombre }}</a> </p>
 
             <p class="category">
                 <strong>Categoría:</strong> {{ producto.categoria.nombre }}
-            </p>
-
-            <p class="price">
-                <strong>Precio:</strong> {{ producto.precio }} €
             </p>
 
             <p class="stock">
@@ -39,11 +45,14 @@
                 {% endif %}
             </p>
 
-            {% if rating_medio %}
-                <p class="rating">
-                    ⭐ {{ rating_medio|floatformat:1 }} / 5
-                </p>
-            {% endif %}
+            <div class="payment-btns">
+                <button id="cart-btn">
+                    Añadir a la cesta
+                </button>
+                <button id="buy-now-btn">
+                    Comprar ya
+                </button>
+            </div>
 
             <div class="description">
                 <h3>Descripción</h3>
@@ -53,6 +62,15 @@
 
         </div>
     </div>
+
+    <hr>
+
+    <h2>Escribe tu reseña</h2>
+    <form class="review-form" method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit">Enviar Reseña</button>
+    </form>
 
     <hr>
 

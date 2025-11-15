@@ -27,12 +27,12 @@
             <div class="productCard">
                 <a href="{% url 'producto_detalle' producto.producto__id_producto %}">
                     <div class="productImage">
-                        <img src="" alt="" loading="lazy">
+                        <img src="{% static producto.producto__imagen_url %}" alt="" loading="lazy">
                     </div>
                 </a>
                 <div class="cardDetails">
                     <h3 class="productName">
-                        <a href="#">{{ producto.producto__nombre }}</a>
+                        <a href="{% url 'producto_detalle' producto.producto__id_producto %}">{{ producto.producto__nombre }}</a>
                     </h3>
                     <p class="productPrice">{{ producto.producto__precio }}€</p>
                 </div>
@@ -48,9 +48,9 @@
         <div class="productListDisplay">
             {% for producto in mas_vendidos %}
             <div class="productCard">
-                <a href="#">
+                <a href="{% url 'producto_detalle' producto.producto__id_producto %}">
                     <div class="productImage">
-                        <img src="{{ producto.producto__imagen_url }}" alt="" loading="lazy">
+                        <img src="{% static producto.producto__imagen_url %}" alt="" loading="lazy">
                     </div>
                 </a>
                 <div class="cardDetails">

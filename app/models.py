@@ -10,6 +10,8 @@ class Marca(models.Model):
     id_marca = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=150,unique=True)
     descripcion = models.TextField(blank=True)
+    logo_url = models.CharField(blank=True)
+
 
     class Meta:
         db_table = "MARCA"

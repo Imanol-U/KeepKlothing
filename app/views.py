@@ -1,9 +1,11 @@
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render,get_object_or_404,redirect
 from django.db.models import Sum, Avg
 from django.utils import timezone
 from datetime import timedelta
 from django.http import HttpResponse
-from .models import Producto, ProductoCompra, Categoria
+from .models import Producto, ProductoCompra, Categoria, Usuario, Marca
+from .forms import ReviewForm
+
 
 # Create your views here.
 
@@ -46,8 +48,21 @@ def filters(request, nombre_categoria):
         'productos': lista_productos
     }
     return render(request, 'productFilter.html', context)
+
 def producto_detalle(request, id_producto):
     producto = get_object_or_404(Producto, pk=id_producto)
+
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            default_user = Usuario.objects.get(pk = 2)
+            resenia = form.save(commit=False)
+            resenia.producto = producto
+            resenia.usuario = default_user #Aquí despues agregar autenticación
+            resenia.save()
+            return redirect('producto_detalle', id_producto=producto.pk)
+    else:
+        form = ReviewForm()
 
     # Si quieres mostrar reseñas y media de estrellas:
     resenias = producto.resenias.select_related("usuario").all()
@@ -57,46 +72,15 @@ def producto_detalle(request, id_producto):
         "producto": producto,
         "resenias": resenias,
         "rating_medio": rating_medio,
+        "form": form
     }
     return render(request, "productDetails.html", context)
 
-def marca_info(request):
-    # Productos destacados del último mes (puedes cambiar el rango o el orden)
-    fecha_hace_30_dias = timezone.now() - timedelta(days=30)
-    productos_qs = (
-        ProductoCompra.objects
-        .filter(compra__fecha__gte=fecha_hace_30_dias)
-        .values(
-            'producto__id_producto',
-            'producto__nombre',
-            'producto__imagen_url',
-            'producto__precio'
-        )
-        .annotate(total_vendido=Sum('cantidad'))
-        .order_by('-total_vendido')
-    )
+def marca_info(request, nombre):
+    marca = Marca.objects.get(nombre = nombre)
+    productos = marca.productos.all()
 
-    productos = [
-        {
-            "id": p['producto__id_producto'],
-            "nombre": p['producto__nombre'],
-            "imagen": p['producto__imagen_url'],
-            "precio": p['producto__precio'],
-            "vendido": p['total_vendido'],
-        }
-        for p in productos_qs
-    ]
+    context = {"marca": marca,
+               "productos" : productos}
 
-    marca = {
-        "nombre": "Keep Klothing",
-        "slogan": "Style in motion.",
-        "descripcion": (
-            "Keep Klothing es una marca de ropa urbana premium que fusiona el estilo callejero "
-            "con un toque futurista. Nuestras prendas están diseñadas para quienes buscan destacar "
-            "con autenticidad, combinando sostenibilidad y diseño moderno."
-        ),
-        "logo": "img/logo.png",
-        "productos": productos,
-    }
-
-    return render(request, "marcaInfo.html", {"marca": marca})
+    return render(request, "marcaInfo.html", context)

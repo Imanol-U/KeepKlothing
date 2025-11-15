@@ -15,8 +15,7 @@
 <body>
     <header>
         <div id="sale-ad">
-            <p>¡LO ÚLTIMO YA ESTÁ AQUÍ!</p>
-            <a href="#">VER MÁS</a>
+            <p>ENVIO GRATUITO PARA PEDIDOS SUPERIORES A 100€</p>
         </div>
         <nav>
             <p id="logo">KeepKlothing</p>
@@ -58,11 +57,12 @@
             </div>
 
             <div class="footer-section links">
-                <h4>Secciones</h4>
+                <h4>Categorías</h4>
                 <ul>
-                    <li><a href="#">Hombre</a></li>
-                    <li><a href="#">Mujer</a></li>
-                    <li><a href="#">Niños</a></li>
+                    <li><a href="{% url 'filters' 'Camisetas' %}">Camisetas</a></li>
+                    <li><a href="{% url 'filters' 'Sudaderas' %}">Sudaderas</a></li>
+                    <li><a href="{% url 'filters' 'Pantalones' %}">Pantalones</a></li>
+                    <li><a href="{% url 'filters' 'calzado' %}">Calzado</a></li>
                 </ul>
             </div>
 
