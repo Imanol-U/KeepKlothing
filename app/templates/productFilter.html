@@ -8,7 +8,19 @@
     </header>
     <div id="display-productos">
         {% for producto in productos%}
-            <div class="producto"><strong>{{producto.nombre}}</strong></div>
+        <div class="productCard">
+            <a href="{% url 'producto_detalle' producto.id_producto %}">
+                <div class="productImage">
+                    <img src="" alt="" loading="lazy">
+                </div>
+            </a>
+            <div class="cardDetails">
+                <h3 class="productName">
+                    <a href="#">{{ producto.nombre }}</a>
+                </h3>
+                <p class="productPrice">{{ producto.precio }}€</p>
+            </div>
+        </div>
         {% endfor %}
     </div>
 </main>
