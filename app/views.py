@@ -8,6 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction
 import json
 from .models import Producto, ProductoCompra, Categoria, Usuario, Marca, Resenia, Compra
+from .models import Producto, ProductoCompra, Categoria, Usuario, Marca, Resenia
 from .forms import ReviewForm
 
 
@@ -56,25 +57,52 @@ def filters(request, nombre_categoria):
 def producto_detalle(request, id_producto):
     producto = get_object_or_404(Producto, pk=id_producto)
 
-    default_user = Usuario.objects.get(pk= 2)
+    # 1. CORRECCIÓN A: Detectar AJAX correctamente
+    is_ajax = request.headers.get('x-requested-with') == 'XMLHttpRequest' 
 
-    review_exists = Resenia.objects.filter(usuario=default_user,producto=producto).exists()
+    default_user = Usuario.objects.get(pk= 2)
+    review_exists = Resenia.objects.filter(usuario=default_user, producto=producto).exists()
 
     if request.method == 'POST':
+        # --- Manejo de caso donde la reseña ya existe ---
         if review_exists:
-            return redirect('producto_detalle', id_producto=producto.pk)
+            if is_ajax:
+                return JsonResponse({'success': False, 'message': 'Solo puedes dejar una reseña por producto.'}, status=400)
+            else:
+                return redirect('producto_detalle', id_producto=producto.pk)
+        
+        # --- Manejo de la nueva reseña ---
         else:
             form = ReviewForm(request.POST)
             if form.is_valid():
+                
+                # LA LÓGICA DEL GUARDADO DEBE IR AQUÍ (antes del if is_ajax)
                 resenia = form.save(commit=False)
                 resenia.producto = producto
-                resenia.usuario = default_user #Aquí despues agregar autenticación
+                resenia.usuario = default_user 
                 resenia.save()
-                return redirect('producto_detalle', id_producto=producto.pk)
-    else:
-        form = ReviewForm()
+                
+                if is_ajax:
+                    # Respuesta AJAX (201 Created)
+                    return JsonResponse({
+                        'success': True,
+                        'comentario': resenia.comentario, # Usa .comentario
+                        'usuario_nombre': default_user.nombre, # Usa .nombre
+                        # 2. CORRECCIÓN B: Usa el nombre del campo de tu modelo
+                        'fecha_resenia' : resenia.fecha_resenia.strftime('%d/%m/%Y %H:%M') 
+                    }, status=201)
+                else:
+                    # Respuesta Sincrónica (Redirección, que queremos evitar con AJAX)
+                    return redirect('producto_detalle', id_producto=producto.pk)
+            
+            # Manejo de formulario inválido
+            else:
+                if is_ajax:
+                    return JsonResponse({'success': False, 'errors': form.errors}, status=400)
+                # Si no es AJAX, el código caerá al render.
 
-    # Si quieres mostrar reseñas y media de estrellas:
+    # ... (resto del código GET) ...
+    
     resenias = producto.resenias.select_related("usuario").all()
     rating_medio = resenias.aggregate(Avg("estrellas"))["estrellas__avg"]
 
@@ -82,7 +110,7 @@ def producto_detalle(request, id_producto):
         "producto": producto,
         "resenias": resenias,
         "rating_medio": rating_medio,
-        "form": form,
+        "form": form if 'form' in locals() else ReviewForm(), # Usa la instancia del formulario
         "allowReview" : not review_exists
     }
     return render(request, "productDetails.html", context)
