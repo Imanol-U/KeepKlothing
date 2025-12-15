@@ -3,8 +3,11 @@ from django.db.models import Sum, Avg
 from django.utils import timezone
 from datetime import timedelta
 from django.contrib import messages
-from django.http import HttpResponse
-from .models import Producto, ProductoCompra, Categoria, Usuario, Marca, Resenia
+from django.http import HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.db import transaction
+import json
+from .models import Producto, ProductoCompra, Categoria, Usuario, Marca, Resenia, Compra
 from .forms import ReviewForm
 
 
@@ -92,3 +95,60 @@ def marca_info(request, nombre):
                "productos" : productos}
 
     return render(request, "marcaInfo.html", context)
+
+def carrito(request):
+    return render(request, "cart.html")
+
+@csrf_exempt
+def tramitar_pedido(request):
+    if request.method != 'POST':
+        return JsonResponse({'success': False, 'message': 'Método no permitido'}, status=405)
+    
+    data = json.loads(request.body)
+    cart = data.get('cart', [])
+    
+    if not cart:
+        return JsonResponse({'success': False, 'message': 'El carrito está vacío'})
+
+    usuario = Usuario.objects.get(pk=2) 
+
+    with transaction.atomic():
+        total_compra = 0
+        item_details = []
+        
+        for item in cart:
+            try:
+                producto = Producto.objects.select_for_update().get(pk=item['id'])
+            except Producto.DoesNotExist:
+                return JsonResponse({'success': False, 'message': f"Producto ID {item['id']} no encontrado"})
+            
+            cantidad = int(item['quantity'])
+            
+            producto.stock -= cantidad
+            producto.save()
+            subtotal = producto.precio * cantidad
+            total_compra += subtotal
+            
+            item_details.append({
+                'producto': producto,
+                'cantidad': cantidad,
+                'precio_unitario': producto.precio
+            })
+
+        #Creamos compra en la base de datos
+        compra = Compra.objects.create(
+            usuario=usuario,
+            total=total_compra,
+            estado='pendiente',
+            metodo_pago='tarjeta'
+        )
+
+        #Creamos detalles de compra en la base de datos
+        for detail in item_details:
+            ProductoCompra.objects.create(
+                compra=compra,
+                producto=detail['producto'],
+                cantidad=detail['cantidad'],
+                precio_unitario=detail['precio_unitario']
+            )
+    return JsonResponse({'success': True, 'message': '¡Compra realizada con éxito!'})

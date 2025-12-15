@@ -10,9 +10,9 @@
     <div class="product-main">
         <div class="product-image">
             {% if producto.imagen_url %}
-                <img src="{% static producto.imagen_url %}" alt="{{ producto.nombre }}">
+            <img src="{% static producto.imagen_url %}" alt="{{ producto.nombre }}">
             {% else %}
-                <img src="{% static 'img/no-image.png' %}" alt="Sin imagen disponible">
+            <img src="{% static 'img/no-image.png' %}" alt="Sin imagen disponible">
             {% endif %}
         </div>
         <div class="product-info">
@@ -23,14 +23,16 @@
             </p>
 
             {% if rating_medio %}
-                <p class="rating">
-                    ⭐ {{ rating_medio|floatformat:1 }} / 5
-                </p>
+            <p class="rating">
+                ⭐ {{ rating_medio|floatformat:1 }} / 5
+            </p>
             {% endif %}
 
             <hr>
 
-            <p class="brand"><strong>Marca:</strong> <a href="{% url 'marca' producto.marca.nombre%}">{{ producto.marca.nombre }}</a> </p>
+            <p class="brand"><strong>Marca:</strong>
+                <a href="{% url 'marca' producto.marca.nombre%}">{{producto.marca.nombre }}</a>
+            </p>
 
             <p class="category">
                 <strong>Categoría:</strong> {{ producto.categoria.nombre }}
@@ -39,16 +41,27 @@
             <p class="stock">
                 <strong>Stock:</strong>
                 {% if producto.stock > 0 %}
-                    En stock ({{ producto.stock }} unidades)
+                En stock ({{ producto.stock }} unidades)
                 {% else %}
-                    Sin stock
+                Sin stock
                 {% endif %}
             </p>
 
             <div class="payment-btns">
-                <button id="cart-btn">
+                {% if producto.stock > 0 %}
+                <button id="cart-btn" onclick="Cart.add({
+                            id: {{ producto.id_producto }}, 
+                            name: '{{ producto.nombre|escapejs }}', 
+                            price: {{ producto.precio }}, 
+                            image: '{% if producto.imagen_url %}{% static producto.imagen_url %}{% else %}{% static 'img/no-image.png' %}{% endif %}'
+                        })">
                     Añadir a la cesta
                 </button>
+                {% else %}
+                <button id="cart-btn" disabled style="background-color: grey; cursor: not-allowed;">
+                    Agotado
+                </button>
+                {% endif %}
                 <button id="buy-now-btn">
                     Comprar ya
                 </button>
@@ -72,7 +85,7 @@
         <button id="submit-review" type="submit">Enviar Reseña</button>
     </form>
     {% else %}
-        <p id="review-alert">Gracias por tu opinión! Solo puedes dejar una reseña por producto.</p>
+    <p id="review-alert">Gracias por tu opinión! Solo puedes dejar una reseña por producto.</p>
     {% endif %}
     <hr>
 
@@ -80,21 +93,21 @@
         <h2>Reseñas</h2>
 
         {% if resenias %}
-            <ul>
-                {% for r in resenias %}
-                    <li>
-                        <strong>{{ r.usuario.nombre }}</strong>
-                        – {{ r.estrellas }} / 5 ⭐
-                        <br>
-                        <small>{{ r.fecha_resenia|date:"d/m/Y H:i" }}</small>
-                        {% if r.comentario %}
-                            <p>{{ r.comentario }}</p>
-                        {% endif %}
-                    </li>
-                {% endfor %}
-            </ul>
+        <ul>
+            {% for r in resenias %}
+            <li>
+                <strong>{{ r.usuario.nombre }}</strong>
+                – {{ r.estrellas }} / 5 ⭐
+                <br>
+                <small>{{ r.fecha_resenia|date:"d/m/Y H:i" }}</small>
+                {% if r.comentario %}
+                <p>{{ r.comentario }}</p>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
         {% else %}
-            <p>Este producto todavía no tiene reseñas.</p>
+        <p>Este producto todavía no tiene reseñas.</p>
         {% endif %}
     </div>
 

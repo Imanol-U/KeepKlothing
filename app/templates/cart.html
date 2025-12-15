@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extraCss %}
+<link rel="stylesheet" href="{% static 'css/cartStyle.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="cart-layout">
+    <div class="cart-main-content">
+        <header class="cart-header">
+            <h1>🛍️ Tu Cesta de Compras</h1>
+            <p class="item-count-indicator"></p>
+        </header>
+
+        <div id="cart-items-container" class="cart-items-list">
+            <p class="empty-cart-msg">Tu cesta está vacía. ¡Añade algunos productos!</p>
+        </div>
+
+        <div class="cart-actions-bottom">
+            <button onclick="Cart.clear()" class="btn btn-secondary btn-clear-cart">
+                Vaciar Cesta
+            </button>
+            <a href="{% url 'home' %}" class="btn btn-link continue-shopping-link">
+                ← Continuar Comprando
+            </a>
+        </div>
+    </div>
+
+    <aside class="cart-summary-sidebar">
+        <div class="summary-box">
+            <h2>Resumen del Pedido</h2>
+            <div class="summary-line">
+                <span>Subtotal:</span>
+                <span id="cart-subtotal" class="summary-value">0.00 €</span>
+            </div>
+            <div class="summary-line">
+                <span>Envío Estimado:</span>
+                <span id="shipping-cost" class="summary-value">Gratis</span>
+            </div>
+            <hr>
+            <div class="summary-line summary-total">
+                <strong>Total:</strong>
+                <strong id="cart-total" class="summary-value">0.00 €</strong>
+            </div>
+
+            <button onclick="Cart.checkout()" class="btn btn-primary btn-checkout">
+                Tramitar Pedido
+            </button>
+        </div>
+
+        <div class="payment-options">
+            <p>Opciones de pago seguras:</p>
+        </div>
+    </aside>
+</section>
+{% endblock %}

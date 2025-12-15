@@ -7,5 +7,7 @@ urlpatterns = [
     path("filters/<str:nombre_categoria>", views.filters, name="filters"),
     path("productos/<int:id_producto>/", views.producto_detalle, name="producto_detalle"),
     path("marca/<str:nombre>", views.marca_info, name="marca"),
+    path("carrito/", views.carrito, name="cart"),
+    path("api/tramitar-pedido/", views.tramitar_pedido, name="tramitar_pedido"),
 
 ]

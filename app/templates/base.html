@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,9 +10,12 @@
     {% block extraCss %}{% endblock %}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
+
 <body>
     <header>
         <div id="sale-ad">
@@ -32,15 +36,19 @@
             <div id="actions">
                 <div id="searchBar">
                     <a href="" id="search-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-search" viewBox="0 0 16 16">
+                            <path
+                                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
                         </svg>
                     </a>
                     <input type="text" placeholder="Buscar un producto...">
                 </div>
-                <a href="" id="cart-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
-                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+                <a href="{% url 'cart' %}" id="cart-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor"
+                        class="bi bi-cart" viewBox="0 0 16 16">
+                        <path
+                            d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
                     </svg>
                 </a>
                 <a href="" id="sign-in-btn">Iniciar Sesión</a>
@@ -53,7 +61,9 @@
     <footer>
         <div class="footer-container">
             <div class="footer-section brand-info">
-                <h3>KeepKlothing.</h3> <p>Tu dosis diaria de estilo. Diseñamos prendas modernas y versátiles que te permiten destacar y expresar tu personalidad única. Viste la tendencia.</p>
+                <h3>KeepKlothing.</h3>
+                <p>Tu dosis diaria de estilo. Diseñamos prendas modernas y versátiles que te permiten destacar y
+                    expresar tu personalidad única. Viste la tendencia.</p>
             </div>
 
             <div class="footer-section links">
@@ -74,5 +84,7 @@
             </div>
         </div>
     </footer>
+    <script src="{% static 'js/cart.js' %}"></script>
 </body>
+
 </html>
