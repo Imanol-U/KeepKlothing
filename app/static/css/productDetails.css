@@ -149,3 +149,18 @@ hr{
     cursor: pointer;
     margin-left: 140px;
 }
+
+.btnEliminarResena {
+    margin-top: 6px;
+    background-color: red;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.btnEliminarResena:hover {
+    background-color: red;
+}
