@@ -115,18 +115,18 @@ def producto_detalle(request, id_producto):
     }
     return render(request, "productDetails.html", context)
 
-def eliminar_resenia(request, id_resenia):
-    resenia = get_object_or_404(Resenia, pk=id_resenia)
-    usuario_defecto = Usuario.objects.get(pk=2)
+def eliminar_resenia(request, id_resenia):  #Vista para eliminar una reseña concreta
+    resenia = get_object_or_404(Resenia, pk=id_resenia)  #Busca la reseña por su id y si no existe, devuelve error 404
+    usuario_defecto = Usuario.objects.get(pk=2) 
     if resenia.usuario != usuario_defecto:
         messages.error(request, "No puedes borrar esta reseña")
         return redirect("producto_detalle", id_producto=resenia.producto.id_producto)
 
-    if request.method == "POST":
-        id_producto = resenia.producto.id_producto
-        resenia.delete()
+    if request.method == "POST":   # Solo queremos borrar si llega una petición POST 
+        id_producto = resenia.producto.id_producto  #Guarda el id del producto asocioado a la reseña y luego te sirve para volver a la ficha de ese producto
+        resenia.delete()  #Elimina la reseña de la base de datos
         messages.success(request, "Reseña eliminada correctamente.")
-        return redirect("producto_detalle", id_producto=id_producto)
+        return redirect("producto_detalle", id_producto=id_producto) #Redirige a la ficha del producto asociado a la reseña borrada y así se recarga la página sin esa reseña.
 
     return redirect("producto_detalle", id_producto=resenia.producto.id_producto)
 

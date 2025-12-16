@@ -9,6 +9,6 @@ urlpatterns = [
     path("marca/<str:nombre>", views.marca_info, name="marca"),
     path("carrito/", views.carrito, name="cart"),
     path("api/tramitar-pedido/", views.tramitar_pedido, name="tramitar_pedido"),
-    path("resenias/<int:id_resenia>/eliminar/", views.eliminar_resenia, name="eliminar_resenia"),
+    path("resenias/<int:id_resenia>/eliminar/", views.eliminar_resenia, name="eliminar_resenia"),   #Ruta para eliminar una reseña concreta. <int:id_resenia> indica que pasamos el id de la reseña como numero entero
 
 ]
