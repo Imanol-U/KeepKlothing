@@ -78,7 +78,7 @@
 
     <hr>
     {% if allowReview %}
-    <h2>Escribe tu reseña</h2>
+    <h2 id="MensajeResenia">Escribe tu reseña</h2>
     <form class="review-form" method="post">
         {% csrf_token %}
         {{form.as_p}}
@@ -109,6 +109,7 @@
                     {% csrf_token %}  <!-- Token de seguridad obligatorio en POST -->
                     <button type="submit" class="btnEliminarResena">   <!-- Boton para enviar el formulario y borrar la reseña -->
                         Eliminar reseña
+                {% endif %}
             </li>
             {% endfor %}
         </ul>

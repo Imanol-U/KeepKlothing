@@ -1,11 +1,32 @@
 
 document.addEventListener('DOMContentLoaded', function(){
 const form = document.getElementsByClassName('review-form')[0]; //Pillamos el formulario
-const contenedorResenas = document.getElementsByClassName('product-reviews') //Este es el contenedor de las reseñas
+const contenedorResenas = document.getElementsByClassName('product-reviews'); //Este es el contenedor de las reseñas
+const lista_resenias = document.querySelector('.product-reviews ul'); //Esta es la lista en la que meteremos la reseña creada
+
+//const formDelete = document.getElementsByClassName('botonELiminar')[0]; //Formulario que elimina la reseña
+
+//Añadimos un listener al contenedor padre
+
+//if (contenedorResenas){
+//    contenedorResenas[0].addEventListener('click', function(event){
+//        const target = event.target;
+//
+//        const botonELiminar = target.closest('.btnEliminarResena');
+//
+//        if(botonELiminar){
+//            handleEliminarResenia(botonELiminar);
+//        }
+//
+//    });
+//
+//}
+//
+//
 
 form.addEventListener('submit', function(event){
-    event.preventDefault(); //Detener envío por defecto que es sincrono
 
+    event.preventDefault(); //Detener envío por defecto que es sincrono
     const data = new FormData(form);
     const csrftoken = data.get('csrfmiddlewaretoken'); //obtener token del formulario (porque es el metodo post)
 
@@ -27,16 +48,31 @@ form.addEventListener('submit', function(event){
             if (data.success){
                 //La insercion en la bbdd exitosa
                 const nuevaResenaHTML = `
-                <div class="resena-item">
-                    <h4>Autor: ${data.usuario_nombre}</h4>
+                <li>
+                    <strong>${data.usuario_nombre}</strong>
+                    -${data.estrellas} / 5 ⭐
+                    <br>
+                    <small>${data.fecha_resenia}</small>
                     <p>${data.comentario}</p>
-                    <small>Fecha: ${data.fecha_resenia}</small>
-                </div>
+                </li>
             `;      
-            contenedorResenas[0].insertAdjacentHTML('afterbegin', nuevaResenaHTML);
+            lista_resenias.insertAdjacentHTML('afterbegin', nuevaResenaHTML);
+
+            const elementoAlerta = document.createElement('p'); 
+
+            // Asignarle el ID (como propiedad del objeto)
+            elementoAlerta.id = 'review-alert'; 
+            
+            //Asignarle el contenido de texto
+            elementoAlerta.textContent = 'Gracias por tu opinión! Solo puedes dejar una reseña por producto.'; 
+            
+            //Insertar el objeto DOM antes del formulario
+            form.before(elementoAlerta);
+            document.getElementById('MensajeResenia').remove();
+            form.remove();
             
             //Opcional pero recomencable limpiar form
-            form.reset();
+            //form.reset();
 
             } else {
                 alert('Errores en el formulario:' + JSON.stringify(data.errors));
@@ -49,3 +85,4 @@ form.addEventListener('submit', function(event){
         });
     });
 });
+

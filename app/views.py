@@ -4,6 +4,7 @@ from django.utils import timezone
 from datetime import timedelta
 from django.contrib import messages
 from django.http import HttpResponse, JsonResponse
+from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction
 import json
@@ -57,7 +58,7 @@ def filters(request, nombre_categoria):
 def producto_detalle(request, id_producto):
     producto = get_object_or_404(Producto, pk=id_producto)
 
-    # 1. CORRECCIÓN A: Detectar AJAX correctamente
+    #Detectar AJAX correctamente
     is_ajax = request.headers.get('x-requested-with') == 'XMLHttpRequest' 
 
     default_user = Usuario.objects.get(pk= 2)
@@ -86,10 +87,11 @@ def producto_detalle(request, id_producto):
                     # Respuesta AJAX (201 Created)
                     return JsonResponse({
                         'success': True,
-                        'comentario': resenia.comentario, # Usa .comentario
-                        'usuario_nombre': default_user.nombre, # Usa .nombre
-                        # 2. CORRECCIÓN B: Usa el nombre del campo de tu modelo
-                        'fecha_resenia' : resenia.fecha_resenia.strftime('%d/%m/%Y %H:%M') 
+                        'comentario': resenia.comentario, 
+                        'usuario_nombre': default_user.nombre,
+                        'fecha_resenia' : resenia.fecha_resenia.strftime('%d/%m/%Y %H:%M'),
+                        'estrellas' : resenia.estrellas
+                        #importante poner los mismos nombres aquí que luego en los datos del form de ajax
                     }, status=201)
                 else:
                     # Respuesta Sincrónica (Redirección, que queremos evitar con AJAX)
@@ -118,6 +120,7 @@ def producto_detalle(request, id_producto):
 def eliminar_resenia(request, id_resenia):  #Vista para eliminar una reseña concreta
     resenia = get_object_or_404(Resenia, pk=id_resenia)  #Busca la reseña por su id y si no existe, devuelve error 404
     usuario_defecto = Usuario.objects.get(pk=2) 
+
     if resenia.usuario != usuario_defecto:
         messages.error(request, "No puedes borrar esta reseña")
         return redirect("producto_detalle", id_producto=resenia.producto.id_producto)
@@ -128,6 +131,7 @@ def eliminar_resenia(request, id_resenia):  #Vista para eliminar una reseña con
         messages.success(request, "Reseña eliminada correctamente.")
         return redirect("producto_detalle", id_producto=id_producto) #Redirige a la ficha del producto asociado a la reseña borrada y así se recarga la página sin esa reseña.
 
+    
     return redirect("producto_detalle", id_producto=resenia.producto.id_producto)
 
 
