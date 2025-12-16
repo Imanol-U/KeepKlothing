@@ -115,6 +115,22 @@ def producto_detalle(request, id_producto):
     }
     return render(request, "productDetails.html", context)
 
+def eliminar_resenia(request, id_resenia):
+    resenia = get_object_or_404(Resenia, pk=id_resenia)
+    usuario_defecto = Usuario.objects.get(pk=2)
+    if resenia.usuario != usuario_defecto:
+        messages.error(request, "No puedes borrar esta reseña")
+        return redirect("producto_detalle", id_producto=resenia.producto.id_producto)
+
+    if request.method == "POST":
+        id_producto = resenia.producto.id_producto
+        resenia.delete()
+        messages.success(request, "Reseña eliminada correctamente.")
+        return redirect("producto_detalle", id_producto=id_producto)
+
+    return redirect("producto_detalle", id_producto=resenia.producto.id_producto)
+
+
 def marca_info(request, nombre):
     marca = get_object_or_404(Marca,nombre = nombre)
     productos = marca.productos.all()
