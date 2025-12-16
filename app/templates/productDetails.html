@@ -104,10 +104,10 @@
                 <p>{{ r.comentario }}</p>
                 {% endif %}
 
-                {% if r.usuario.id_usuario == 2 %}
-                <form method="post" action="{% url 'eliminar_resenia' r.id_resenia %}">
-                    {% csrf_token %}
-                    <button type="submit" class="btnEliminarResena">
+                {% if r.usuario.id_usuario == 2 %}  <!-- Solo mostramos el boton de borrar si la reseña pertenece al usuario con id_usuario = 2.Esto evita que un usuario borre reseñas de otros -->
+                <form method="post" action="{% url 'eliminar_resenia' r.id_resenia %}">  <!-- Formulario para borrar la reseña. method="post": porque estamos modificando la BD. action: llama a la URL 'eliminar_resenia' pasando el id de esta reseña -->
+                    {% csrf_token %}  <!-- Token de seguridad obligatorio en POST -->
+                    <button type="submit" class="btnEliminarResena">   <!-- Boton para enviar el formulario y borrar la reseña -->
                         Eliminar reseña
             </li>
             {% endfor %}
