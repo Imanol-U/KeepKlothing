@@ -103,6 +103,12 @@
                 {% if r.comentario %}
                 <p>{{ r.comentario }}</p>
                 {% endif %}
+
+                {% if r.usuario.id_usuario == 2 %}
+                <form method="post" action="{% url 'eliminar_resenia' r.id_resenia %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btnEliminarResena">
+                        Eliminar reseña
             </li>
             {% endfor %}
         </ul>
