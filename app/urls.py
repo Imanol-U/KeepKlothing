@@ -9,5 +9,6 @@ urlpatterns = [
     path("marca/<str:nombre>", views.marca_info, name="marca"),
     path("carrito/", views.carrito, name="cart"),
     path("api/tramitar-pedido/", views.tramitar_pedido, name="tramitar_pedido"),
+    path("resenias/<int:id_resenia>/eliminar/", views.eliminar_resenia, name="eliminar_resenia"),
 
 ]
