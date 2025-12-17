@@ -16,7 +16,7 @@
                 {% csrf_token %}
 
                 {% if form.errors %}
-                <div style="color: red; font-size: 0.9rem; margin-bottom: 1rem;">
+                <div id="errorDiv" style="color: red; font-size: 0.9rem; margin-bottom: 1rem;">
                     <p>Por favor corrige los siguientes errores:</p>
                     <ul>
                         {% for field in form %}

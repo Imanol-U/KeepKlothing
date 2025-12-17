@@ -153,10 +153,12 @@ def producto_detalle(request, id_producto):
 def eliminar_resenia(request, id_resenia):  #Vista para eliminar una reseña concreta
     resenia = get_object_or_404(Resenia, pk=id_resenia)
     
+    #El usuario no está autenticado
     if not request.user.is_authenticated:
         messages.error(request, "Debes iniciar sesión.")
         return redirect("producto_detalle", id_producto=resenia.producto.id_producto)
 
+    #Se obtiene el usuario actual mediante el email que tiene asignado el user de django
     usuario_actual = Usuario.objects.filter(email=request.user.email).first()
 
     if not usuario_actual or resenia.usuario != usuario_actual:
@@ -254,6 +256,7 @@ def profile(request):
     # orders = Order.objects.filter(user=request.user)
     return render(request, 'profile.html')
 
+#Registramos al usuario
 def register(request):
     if request.method == 'POST':
         form = RegistroForm(request.POST)
@@ -267,6 +270,7 @@ def register(request):
     
     return render(request, 'register.html', {'form': form})
 
+#El usuario ha olvidado su contraseña
 def olvidar_contrasena(request):
     ctx = {}
 
@@ -307,6 +311,7 @@ def olvidar_contrasena(request):
 
     return render(request, "olvidarContrasena.html", ctx)
 
+#Buscar productos
 def search_products(request):
     query = request.GET.get('q', '')
     if len(query) > 2:

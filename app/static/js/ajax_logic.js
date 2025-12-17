@@ -86,15 +86,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     document.getElementById('MensajeResenia').remove();
                     form.remove();
 
-                    //Opcional pero recomencable limpiar form
-                    //form.reset();
-
                 } else {
                     alert('Errores en el formulario:' + JSON.stringify(data.errors));
                 }
             })
             .catch(error => {
-                //Manejo de errores de red o del bloque .then
                 console.error('Error en la solicitud AJAX:', error);
                 alert('Erro al intentar enviar la reseña');
             });

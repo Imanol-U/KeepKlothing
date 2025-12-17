@@ -1,16 +1,21 @@
+//Clave para el LocalStorage
 const CART_KEY = 'keepklothing_cart';
 
+//Creamos la clase de carrito
 const Cart = {
+    //Recuperar el carrito
     getCart: function () {
         const cart = localStorage.getItem(CART_KEY);
         return cart ? JSON.parse(cart) : [];
     },
 
+    //Guardar el carrito
     saveCart: function (cart) {
         localStorage.setItem(CART_KEY, JSON.stringify(cart));
         this.updateCartCount();
     },
 
+    //Añadir producto al carrito
     add: function (product) {
         let cart = this.getCart();
         const existingProductIndex = cart.findIndex(item => item.id === product.id);
@@ -26,6 +31,7 @@ const Cart = {
         alert('Producto añadido al carrito');
     },
 
+    //Eliminar un producto del carrito
     remove: function (productId) {
         let cart = this.getCart();
         cart = cart.filter(item => item.id !== productId);
@@ -33,6 +39,7 @@ const Cart = {
         this.renderCartPage();
     },
 
+    //Modificar Cantidad del carrito
     updateQuantity: function (productId, quantity) {
         let cart = this.getCart();
         const productIndex = cart.findIndex(item => item.id === productId);
@@ -48,23 +55,27 @@ const Cart = {
         }
     },
 
+    //Vaciar el carrito
     clear: function () {
         localStorage.removeItem(CART_KEY);
         this.updateCartCount();
         this.renderCartPage();
     },
 
+    //Log consola
     updateCartCount: function () {
         const cart = this.getCart();
         const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
         console.log('Cart count updated:', totalCount);
     },
 
+    //Calcular valor total
     calculateTotal: function () {
         const cart = this.getCart();
         return cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2);
     },
 
+    //Renderizar página carrito
     renderCartPage: function () {
         const cartContainer = document.getElementById('cart-items-container');
         const cartSubTotalElement = document.getElementById('cart-subtotal');
@@ -111,6 +122,7 @@ const Cart = {
         }
     },
 
+    //Tramitar pedido hacer, fetch a la API
     checkout: function () {
         const cart = this.getCart();
         if (cart.length === 0) {
@@ -121,7 +133,7 @@ const Cart = {
         if (!confirm('¿Estás seguro de que quieres tramitar el pedido?')) {
             return;
         }
-
+        //Fetch a la API
         fetch('/api/tramitar-pedido/', {
             method: 'POST',
             headers: {
@@ -143,7 +155,7 @@ const Cart = {
                     alert(data.message);
                     this.clear();
                     window.location.href = '/';
-                } else {
+                } else {    //No autenticado
                     if (data.error_code === 'not_authenticated') {
                         alert(data.message);
                         window.location.href = '/login/';
@@ -152,6 +164,7 @@ const Cart = {
                     }
                 }
             })
+            //error en el auth
             .catch(error => {
                 if (error.type === 'auth_error') {
                     alert(error.message);
