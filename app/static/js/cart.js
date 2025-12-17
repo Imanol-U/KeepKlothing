@@ -67,6 +67,7 @@ const Cart = {
 
     renderCartPage: function () {
         const cartContainer = document.getElementById('cart-items-container');
+        const cartSubTotalElement = document.getElementById('cart-subtotal');
         const cartTotalElement = document.getElementById('cart-total');
 
         if (!cartContainer) return;
@@ -76,7 +77,9 @@ const Cart = {
 
         if (cart.length === 0) {
             cartContainer.innerHTML = '<p>Tu carrito está vacío.</p>';
+            if (cartSubTotalElement) cartSubTotalElement.innerText = '0.00 €';
             if (cartTotalElement) cartTotalElement.innerText = '0.00 €';
+
             return;
         }
 
@@ -93,12 +96,15 @@ const Cart = {
                 </div>
                 <div class="item-actions">
                     <input type="number" min="1" value="${item.quantity}" onchange="Cart.updateQuantity(${item.id}, this.value)">
-                    <button onclick="Cart.remove(${item.id})">Eliminar</button>
-                    <p class="subtotal">Total: ${(item.price * item.quantity).toFixed(2)} €</p>
+                    <button id="delete-btn" onclick="Cart.remove(${item.id})">Eliminar</button>
                 </div>
             `;
             cartContainer.appendChild(itemElement);
         });
+
+        if (cartSubTotalElement) {
+            cartSubTotalElement.innerText = this.calculateTotal() + ' €';
+        }
 
         if (cartTotalElement) {
             cartTotalElement.innerText = this.calculateTotal() + ' €';
@@ -120,22 +126,40 @@ const Cart = {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]') ? document.querySelector('[name=csrfmiddlewaretoken]').value : '',
             },
             body: JSON.stringify({ cart: cart })
         })
-            .then(response => response.json())
+            .then(response => {
+                if (response.status === 401) {
+                    return response.json().then(data => {
+                        throw { type: 'auth_error', message: data.message };
+                    });
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.success) {
                     alert(data.message);
                     this.clear();
                     window.location.href = '/';
                 } else {
-                    alert('Error: ' + data.message);
+                    if (data.error_code === 'not_authenticated') {
+                        alert(data.message);
+                        window.location.href = '/login/';
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
-                alert('Hubo un error al procesar el pedido.');
+                if (error.type === 'auth_error') {
+                    alert(error.message);
+                    window.location.href = '/login/';
+                } else {
+                    console.error('Error:', error);
+                    alert('Hubo un error al procesar el pedido.');
+                }
             });
     }
 };

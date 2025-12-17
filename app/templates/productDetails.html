@@ -77,6 +77,7 @@
     </div>
 
     <hr>
+    {% if isAuthenticated %}
     {% if allowReview %}
     <h2 id="MensajeResenia">Escribe tu reseña</h2>
     <form class="review-form" method="post">
@@ -86,6 +87,9 @@
     </form>
     {% else %}
     <p id="review-alert">Gracias por tu opinión! Solo puedes dejar una reseña por producto.</p>
+    {% endif %}
+    {% else %}
+    <p>Debes de estar <a href="{% url 'login' %}">logeado</a> para dejar una reseña.</p>
     {% endif %}
     <hr>
 
@@ -104,11 +108,13 @@
                 <p>{{ r.comentario }}</p>
                 {% endif %}
 
-                {% if r.usuario.id_usuario == 2 %}  <!-- Solo mostramos el boton de borrar si la reseña pertenece al usuario con id_usuario = 2.Esto evita que un usuario borre reseñas de otros -->
-                <form method="post" action="{% url 'eliminar_resenia' r.id_resenia %}">  <!-- Formulario para borrar la reseña. method="post": porque estamos modificando la BD. action: llama a la URL 'eliminar_resenia' pasando el id de esta reseña -->
-                    {% csrf_token %}  <!-- Token de seguridad obligatorio en POST -->
-                    <button type="submit" class="btnEliminarResena">   <!-- Boton para enviar el formulario y borrar la reseña -->
+                {% if usuario_actual_id and r.usuario.id_usuario == usuario_actual_id %}
+                <form method="post" action="{% url 'eliminar_resenia' r.id_resenia %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btnEliminarResena">
                         Eliminar reseña
+                    </button>
+                </form>
                 {% endif %}
             </li>
             {% endfor %}
@@ -117,6 +123,6 @@
         <p>Este producto todavía no tiene reseñas.</p>
         {% endif %}
     </div>
-<script src="{% static 'js/ajax_logic.js' %}"></script>
+    <script src="{% static 'js/ajax_logic.js' %}"></script>
 </div>
 {% endblock %}

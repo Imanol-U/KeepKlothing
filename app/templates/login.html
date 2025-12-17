@@ -1,23 +1,24 @@
 {% extends 'base.html' %}
 {% load static %}
-   
+
 {% block extraCss %}
-    <link rel="stylesheet" href="{% static 'css/loginStyle.css' %}">
+<link rel="stylesheet" href="{% static 'css/loginStyle.css' %}">
 {% endblock %}
 
 {% block content %}
 <div class="login-wrapper">
-    
+
     <div class="login-side">
         <div class="form-box">
             <h2>Bienvenido</h2>
-            <p>Introduce tus credenciales para acceder.</p>
+            <p>Introduce tus credenciales para acceder. Si no tienes una cuenta, <a
+                    href="{% url 'register' %}">regístrate</a>.</p>
 
             <form method="post">
                 {% csrf_token %}
-                
+
                 {% if form.errors %}
-                    <p style="color: red; font-size: 0.9rem;">Usuario o contraseña incorrectos.</p>
+                <p style="color: red; font-size: 0.9rem;">Usuario o contraseña incorrectos.</p>
                 {% endif %}
 
                 <div class="input-group">
@@ -31,16 +32,17 @@
                 </div>
 
                 <button type="submit" class="btn-login">INICIAR SESIÓN</button>
-            </form>    
+            </form>
             <p class="forgot-password">
-  <a href="{% url 'olvidar_contrasena' %}">He olvidado mi contraseña</a>
-</p>
+                <a href="{% url 'olvidar_contrasena' %}">He olvidado mi contraseña</a>
+            </p>
         </div>
     </div>
 
 
     <div class="image-side">
-        <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=2000&auto=format&fit=crop" alt="Login Image">
+        <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=2000&auto=format&fit=crop"
+            alt="Login Image">
     </div>
 
 </div>

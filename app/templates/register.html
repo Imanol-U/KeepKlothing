@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extraCss %}
+<link rel="stylesheet" href="{% static 'css/loginStyle.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="login-wrapper">
+    <div class="login-side">
+        <div class="form-box">
+            <h2>Crear Cuenta</h2>
+            <p>Rellena el formulario para registrarte.</p>
+
+            <form method="post">
+                {% csrf_token %}
+
+                {% if form.errors %}
+                <div style="color: red; font-size: 0.9rem; margin-bottom: 1rem;">
+                    <p>Por favor corrige los siguientes errores:</p>
+                    <ul>
+                        {% for field in form %}
+                        {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                {% for field in form %}
+                <div class="input-group">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                </div>
+                {% endfor %}
+
+                <button type="submit" class="btn-login">REGISTRARSE</button>
+            </form>
+
+            <p class="forgot-password">
+                ¿Ya tienes cuenta? <a href="{% url 'login' %}">Inicia sesión aquí</a>
+            </p>
+        </div>
+    </div>
+
+    <div class="image-side">
+        <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=2070&auto=format&fit=crop"
+            alt="Register Image">
+    </div>
+
+</div>
+{% endblock %}

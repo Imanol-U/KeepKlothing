@@ -10,8 +10,9 @@ from django.db import transaction
 import json
 from .models import Producto, ProductoCompra, Categoria, Usuario, Marca, Resenia, Compra
 from .models import Producto, ProductoCompra, Categoria, Usuario, Marca, Resenia
-from .forms import ReviewForm
+from .forms import ReviewForm, RegistroForm
 from django.shortcuts import render
+from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
@@ -65,10 +66,35 @@ def producto_detalle(request, id_producto):
     #Detectar AJAX correctamente
     is_ajax = request.headers.get('x-requested-with') == 'XMLHttpRequest' 
 
-    default_user = Usuario.objects.get(pk= 2)
-    review_exists = Resenia.objects.filter(usuario=default_user, producto=producto).exists()
+    usuario_actual = None
+    review_exists = False
+    
+    if request.user.is_authenticated:
+        # Intentamos obtener el usuario de nuestra tabla Usuario que coincida con el email del User de Django
+        usuario_actual = Usuario.objects.filter(email=request.user.email).first()
+        if usuario_actual:
+            review_exists = Resenia.objects.filter(usuario=usuario_actual, producto=producto).exists()
 
     if request.method == 'POST':
+        if not request.user.is_authenticated:
+             if is_ajax:
+                return JsonResponse({'success': False, 'message': 'Debes iniciar sesión.'}, status=401)
+             else:
+                return redirect('login') # O la ruta que sea para login
+
+        # Obtenemos o creamos el usuario de la app si no existe (sincronizando con Django User)
+        if not usuario_actual:
+             # Debería existir si el login está bien hecho, pero por seguridad/consistencia con tramitar_pedido:
+            usuario_actual, created = Usuario.objects.get_or_create(
+                email=request.user.email,
+                defaults={
+                    'nombre': request.user.username,
+                    'password_hash': 'oauth_google_placeholder' # O lo que corresponda
+                }
+            )
+            # Re-verificamos si ya existe reseña para este usuario recién recuperado/creado
+            review_exists = Resenia.objects.filter(usuario=usuario_actual, producto=producto).exists()
+
         # --- Manejo de caso donde la reseña ya existe ---
         if review_exists:
             if is_ajax:
@@ -81,31 +107,32 @@ def producto_detalle(request, id_producto):
             form = ReviewForm(request.POST)
             if form.is_valid():
                 
-                # LA LÓGICA DEL GUARDADO DEBE IR AQUÍ (antes del if is_ajax)
                 resenia = form.save(commit=False)
                 resenia.producto = producto
-                resenia.usuario = default_user 
+                resenia.usuario = usuario_actual
                 resenia.save()
                 
                 if is_ajax:
                     # Respuesta AJAX (201 Created)
+                    from django.urls import reverse
+                    delete_url = reverse('eliminar_resenia', args=[resenia.pk])
+                    
                     return JsonResponse({
                         'success': True,
                         'comentario': resenia.comentario, 
-                        'usuario_nombre': default_user.nombre,
+                        'usuario_nombre': usuario_actual.nombre,
                         'fecha_resenia' : resenia.fecha_resenia.strftime('%d/%m/%Y %H:%M'),
-                        'estrellas' : resenia.estrellas
-                        #importante poner los mismos nombres aquí que luego en los datos del form de ajax
+                        'estrellas' : resenia.estrellas,
+                        'id_resenia': resenia.pk,
+                        'delete_url': delete_url
                     }, status=201)
                 else:
-                    # Respuesta Sincrónica (Redirección, que queremos evitar con AJAX)
                     return redirect('producto_detalle', id_producto=producto.pk)
             
             # Manejo de formulario inválido
             else:
                 if is_ajax:
                     return JsonResponse({'success': False, 'errors': form.errors}, status=400)
-                # Si no es AJAX, el código caerá al render.
 
     # ... (resto del código GET) ...
     
@@ -116,25 +143,31 @@ def producto_detalle(request, id_producto):
         "producto": producto,
         "resenias": resenias,
         "rating_medio": rating_medio,
-        "form": form if 'form' in locals() else ReviewForm(), # Usa la instancia del formulario
-        "allowReview" : not review_exists
+        "form": form if 'form' in locals() else ReviewForm(),
+        "allowReview" : (request.user.is_authenticated and not review_exists),
+        "usuario_actual_id": usuario_actual.id_usuario if usuario_actual else None,
+        "isAuthenticated": request.user.is_authenticated
     }
     return render(request, "productDetails.html", context)
 
 def eliminar_resenia(request, id_resenia):  #Vista para eliminar una reseña concreta
-    resenia = get_object_or_404(Resenia, pk=id_resenia)  #Busca la reseña por su id y si no existe, devuelve error 404
-    usuario_defecto = Usuario.objects.get(pk=2) 
+    resenia = get_object_or_404(Resenia, pk=id_resenia)
+    
+    if not request.user.is_authenticated:
+        messages.error(request, "Debes iniciar sesión.")
+        return redirect("producto_detalle", id_producto=resenia.producto.id_producto)
 
-    if resenia.usuario != usuario_defecto:
+    usuario_actual = Usuario.objects.filter(email=request.user.email).first()
+
+    if not usuario_actual or resenia.usuario != usuario_actual:
         messages.error(request, "No puedes borrar esta reseña")
         return redirect("producto_detalle", id_producto=resenia.producto.id_producto)
 
-    if request.method == "POST":   # Solo queremos borrar si llega una petición POST 
-        id_producto = resenia.producto.id_producto  #Guarda el id del producto asocioado a la reseña y luego te sirve para volver a la ficha de ese producto
-        resenia.delete()  #Elimina la reseña de la base de datos
+    if request.method == "POST":
+        id_producto = resenia.producto.id_producto
+        resenia.delete()
         messages.success(request, "Reseña eliminada correctamente.")
-        return redirect("producto_detalle", id_producto=id_producto) #Redirige a la ficha del producto asociado a la reseña borrada y así se recarga la página sin esa reseña.
-
+        return redirect("producto_detalle", id_producto=id_producto)
     
     return redirect("producto_detalle", id_producto=resenia.producto.id_producto)
 
@@ -156,24 +189,34 @@ def tramitar_pedido(request):
     if request.method != 'POST':
         return JsonResponse({'success': False, 'message': 'Método no permitido'}, status=405)
     
+    #Comprueba si el usuario está logeado o no
+    if not request.user.is_authenticated:
+        return JsonResponse({'success': False, 'message': 'Debes iniciar sesión para realizar una compra.','error_code': 'not_authenticated'}, status=401)
+
     data = json.loads(request.body)
     cart = data.get('cart', [])
     
     if not cart:
         return JsonResponse({'success': False, 'message': 'El carrito está vacío'})
 
-    usuario = Usuario.objects.get(pk=2) 
+    # Obtener el Usuario asociado al User de Django (por email)
+    # Si es la primera vez que el usuario está comprando, como se ha cambiado a usar el user de Django, si queremos
+    # mantener las relaciones de la BBDD hay que crear un usuario nuevo.
+    try:
+        usuario = Usuario.objects.get(email=request.user.email)
+    except Usuario.DoesNotExist:
+        usuario = Usuario.objects.create(
+            nombre=request.user.username,
+            email=request.user.email,
+            password_hash='test242424242'
+        )
 
     with transaction.atomic():
         total_compra = 0
         item_details = []
         
         for item in cart:
-            try:
-                producto = Producto.objects.select_for_update().get(pk=item['id'])
-            except Producto.DoesNotExist:
-                return JsonResponse({'success': False, 'message': f"Producto ID {item['id']} no encontrado"})
-            
+            producto = Producto.objects.select_for_update().get(pk=item['id'])
             cantidad = int(item['quantity'])
             
             producto.stock -= cantidad
@@ -203,13 +246,26 @@ def tramitar_pedido(request):
                 cantidad=detail['cantidad'],
                 precio_unitario=detail['precio_unitario']
             )
-    return JsonResponse({'success': True, 'message': '¡Compra realizada con éxito!'})
+    return JsonResponse({'success': True, 'message': '¡Compra realizada con éxito!'}, status=200)
 
 @login_required
 def profile(request):
     # Aquí en el futuro cargarás los pedidos reales de la base de datos
     # orders = Order.objects.filter(user=request.user)
     return render(request, 'profile.html')
+
+def register(request):
+    if request.method == 'POST':
+        form = RegistroForm(request.POST)
+        if form.is_valid():
+            user = form.save() # Guarda el usuario de Django
+            login(request, user) # Inicia sesión automáticamente
+            messages.success(request, "Registro exitoso.")
+            return redirect('home')
+    else:
+        form = RegistroForm()
+    
+    return render(request, 'register.html', {'form': form})
 
 def olvidar_contrasena(request):
     ctx = {}
@@ -250,3 +306,18 @@ def olvidar_contrasena(request):
         ctx["error"] = "No encuentro ese usuario (ni en USUARIO ni en Django)."
 
     return render(request, "olvidarContrasena.html", ctx)
+
+def search_products(request):
+    query = request.GET.get('q', '')
+    if len(query) > 2:
+        products = Producto.objects.filter(nombre__icontains=query)[:5]
+        results = []
+        for product in products:
+            results.append({
+                'id': product.id_producto,
+                'nombre': product.nombre,
+                'precio': product.precio,
+                'imagen_url': product.imagen_url
+            })
+        return JsonResponse({'results': results})
+    return JsonResponse({'results': []})
