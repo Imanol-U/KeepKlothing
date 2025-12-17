@@ -11,6 +11,8 @@ import json
 from .models import Producto, ProductoCompra, Categoria, Usuario, Marca, Resenia, Compra
 from .models import Producto, ProductoCompra, Categoria, Usuario, Marca, Resenia
 from .forms import ReviewForm
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth.models import User
 
 
 # Create your views here.
@@ -200,4 +202,42 @@ def tramitar_pedido(request):
                 precio_unitario=detail['precio_unitario']
             )
     return JsonResponse({'success': True, 'message': '¡Compra realizada con éxito!'})
+def olvidar_contrasena(request):
+    ctx = {}
 
+    if request.method == "POST":
+        username = request.POST.get("username", "").strip()
+        p1 = request.POST.get("password1", "")
+        p2 = request.POST.get("password2", "")
+
+        if not username or not p1 or not p2:
+            ctx["error"] = "Rellena todos los campos."
+            return render(request, "olvidarContrasena.html", ctx)
+
+        if p1 != p2:
+            ctx["error"] = "Las contraseñas no coinciden."
+            return render(request, "olvidarContrasena.html", ctx)
+
+        if len(p1) < 6:
+            ctx["error"] = "La contraseña debe tener al menos 6 caracteres."
+            return render(request, "olvidarContrasena.html", ctx)
+
+        # 1) Intentar actualizar tu tabla USUARIO por email
+        usuario = Usuario.objects.filter(email__iexact=username).first()
+        if usuario:
+            usuario.password_hash = make_password(p1)
+            usuario.save(update_fields=["password_hash"])
+            ctx["success"] = "Contraseña actualizada (tabla USUARIO). Ya puedes iniciar sesión."
+            return render(request, "olvidarContrasena.html", ctx)
+
+        # 2) (Opcional) si no existe en USUARIO, intentar en auth_user por username o email
+        django_user = User.objects.filter(username=username).first() or User.objects.filter(email__iexact=username).first()
+        if django_user:
+            django_user.set_password(p1)
+            django_user.save(update_fields=["password"])
+            ctx["success"] = "Contraseña actualizada correctamente."
+            return render(request, "olvidarContrasena.html", ctx)
+
+        ctx["error"] = "No encuentro ese usuario (ni en USUARIO ni en Django)."
+
+    return render(request, "olvidarContrasena.html", ctx)

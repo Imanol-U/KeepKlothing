@@ -13,4 +13,6 @@ urlpatterns = [
     path("resenias/<int:id_resenia>/eliminar/", views.eliminar_resenia, name="eliminar_resenia"),   #Ruta para eliminar una reseña concreta. <int:id_resenia> indica que pasamos el id de la reseña como numero entero
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path("olvidar-contrasena/", views.olvidar_contrasena, name="olvidar_contrasena"),
+
 ]

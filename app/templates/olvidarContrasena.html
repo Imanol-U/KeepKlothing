@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extraCss %}
+<link rel="stylesheet" href="{% static 'css/olvidarContrasena.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="login-wrapper">
+
+  <div class="login-side">
+    <div class="form-box">
+      <h2>Olvidé mi contraseña</h2>
+      <p>Introduce tu usuario (email) y define una nueva contraseña.</p>
+
+      <form method="post">
+        {% csrf_token %}
+
+        {% if error %}
+          <p style="color: red; font-size: 0.9rem;">{{ error }}</p>
+        {% endif %}
+
+        {% if success %}
+          <p style="color: green; font-size: 0.9rem;">{{ success }}</p>
+        {% endif %}
+
+        <div class="input-group">
+          <label for="id_username">Usuario (email)</label>
+          <input
+            type="text"
+            name="username"
+            id="id_username"
+            placeholder="email@ejemplo.com"
+            required
+          >
+        </div>
+
+        <div class="input-group">
+          <label for="id_password1">Nueva contraseña</label>
+          <input
+            type="password"
+            name="password1"
+            id="id_password1"
+            placeholder="••••••••"
+            required
+          >
+        </div>
+
+        <div class="input-group">
+          <label for="id_password2">Repite la contraseña</label>
+          <input
+            type="password"
+            name="password2"
+            id="id_password2"
+            placeholder="••••••••"
+            required
+          >
+        </div>
+
+        <button type="submit" class="btn-login">
+          ACTUALIZAR CONTRASEÑA
+        </button>
+      </form>
+
+      <p style="margin-top: 16px; font-size: 0.95rem;">
+        <a href="{% url 'login' %}">Volver a iniciar sesión</a>
+      </p>
+    </div>
+  </div>
+
+  <div class="image-side">
+    <img
+      src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=2000&auto=format&fit=crop"
+      alt="Reset password"
+    >
+  </div>
+
+</div>
+{% endblock %}
