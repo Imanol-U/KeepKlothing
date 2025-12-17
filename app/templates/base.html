@@ -29,10 +29,8 @@
                 <li><a href="{% url 'filters' 'Sudaderas' %}">Sudaderas</a></li>
                 <li><a href="{% url 'filters' 'Pantalones' %}">Pantalones</a></li>
                 <li><a href="{% url 'filters' 'Calzado' %}">Calzado</a></li>
-                <!--urls absolutas para que funcionen siempre-->
-
             </ul>
-            <!-- Hay que agregar JS para que la SearchBar funcione-->
+            
             <div id="actions">
                 <div id="searchBar">
                     <a href="" id="search-icon">
@@ -44,6 +42,7 @@
                     </a>
                     <input type="text" placeholder="Buscar un producto...">
                 </div>
+                
                 <a href="{% url 'cart' %}" id="cart-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor"
                         class="bi bi-cart" viewBox="0 0 16 16">
@@ -51,13 +50,34 @@
                             d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
                     </svg>
                 </a>
-                <a href="{% url 'login' %}" id="sign-in-btn">Iniciar Sesión</a>
+
+                {% if user.is_authenticated %}
+                    <div class="user-menu" style="display: flex; align-items: center; margin-left: 25px; border-left: 1px solid #ddd; padding-left: 15px;">
+                        
+                        <div style="display: flex; align-items: center; gap: 8px; margin-right: 15px;">
+                            <i class="bi bi-person-circle" style="font-size: 1.3rem;"></i>
+                            <span style="font-weight: bold; font-family: 'Montserrat', sans-serif;">{{ user.username|upper }}</span>
+                        </div>
+                        
+                        <form action="{% url 'logout' %}" method="post" style="margin: 0;">
+                            {% csrf_token %}
+                            <button type="submit" style="background: none; border: none; cursor: pointer; text-decoration: underline; color: #666; font-family: 'Roboto', sans-serif;">
+                                Salir
+                            </button>
+                        </form>
+                    </div>
+
+                {% else %}
+                    <a href="{% url 'login' %}" id="sign-in-btn">Iniciar Sesión</a>
+                {% endif %}
+                
             </div>
         </nav>
     </header>
+    
     {% block content %}
-
     {% endblock %}
+    
     <footer>
         <div class="footer-container">
             <div class="footer-section brand-info">

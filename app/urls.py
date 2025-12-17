@@ -1,3 +1,4 @@
+from django.contrib.auth import views as auth_views
 from django.urls import path
 from . import views
 
@@ -11,4 +12,5 @@ urlpatterns = [
     path("api/tramitar-pedido/", views.tramitar_pedido, name="tramitar_pedido"),
     path("resenias/<int:id_resenia>/eliminar/", views.eliminar_resenia, name="eliminar_resenia"),   #Ruta para eliminar una reseña concreta. <int:id_resenia> indica que pasamos el id de la reseña como numero entero
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
 ]

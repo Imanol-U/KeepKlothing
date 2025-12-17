@@ -128,3 +128,5 @@ LOGIN_REDIRECT_URL = 'home'
 
 # Cuando haces logout, te manda al home
 LOGOUT_REDIRECT_URL = 'home'
+
+LOGOUT_REDIRECT_URL = 'home'

@@ -139,6 +139,59 @@ nav ul a:hover {
 }
 
 
+/* Estilos para el menú de usuario en el header */
+
+/* Contenedor principal que agrupa icono, nombre y botón salir */
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 15px;            /* Espacio entre el nombre y el botón salir */
+    margin-left: 30px;    /* IMPORTANTE: Esto lo separa del carrito */
+    padding-left: 20px;
+    border-left: 1px solid #ccc; /* Línea separadora opcional entre carrito y usuario */
+    height: 30px;
+}
+
+/* Agrupa el icono y el nombre */
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Espacio entre la personita y el nombre */
+    color: #000;
+}
+
+.username-text {
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+}
+
+/* Botón de salir discreto */
+.logout-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'Roboto', sans-serif;
+    color: #666;
+    font-size: 0.85rem;
+    text-decoration: underline;
+    padding: 0;
+    transition: color 0.3s;
+}
+
+.logout-btn:hover {
+    color: #d9534f; /* Se pone rojo al pasar el ratón */
+}
+
+/* Ajuste para móviles: si la pantalla es pequeña, quitamos márgenes grandes */
+@media (max-width: 768px) {
+    .user-menu {
+        margin-left: 10px;
+        padding-left: 10px;
+        border: none;
+    }
+}
+
 footer {
     background-color: var(--dark-grey);
     color: var(--light-grey-text);
