@@ -5,14 +5,45 @@
 
 {% block extraCss %}
 <link rel="stylesheet" href="{% static 'css/homeStyle.css' %}">
+<link rel="stylesheet" href="{% static 'css/blackFridayModal.css' %}">
+
 {% endblock %}
 
 {% block content %}
 <main>
     <div id="main-image">
         <h2>¡Se Acerca El Black Friday!</h2>
-        <button>Apuntarme</button>
+               <!-- Botón que abre el modal -->
+        <button id="btnApuntarme" type="button">Apuntarme</button>
+
         <img src="{% static '/Img/mainImage.webp' %}" alt="">
+    </div>
+
+    <!-- MODAL -->
+    <div id="bfModalOverlay" class="bf-modal-overlay" aria-hidden="true">
+        <div class="bf-modal" role="dialog" aria-modal="true" aria-labelledby="bfTitle">
+            <button type="button" class="bf-close" id="bfClose" aria-label="Cerrar">×</button>
+            <h3 id="bfTitle">Apúntate al Black Friday</h3>
+            <p>Déjanos tu correo y te avisamos cuando empiece.</p>
+
+            <form method="post" action="{% url 'home' %}" class="bf-form">
+                {% csrf_token %}
+                <label for="bfEmail" class="bf-label">Correo electrónico</label>
+                <input
+                    id="bfEmail"
+                    name="email"
+                    type="email"
+                    placeholder="tuemail@ejemplo.com"
+                    required
+                    class="bf-input"
+                >
+                <div class="bf-actions">
+                    <button type="button" class="bf-btn-secondary" id="bfCancel">Cancelar</button>
+                    <button type="submit" class="bf-btn-primary">Enviar</button>
+                </div>
+            </form>
+        </div>
+    </div>
     </div>
     <section class="productsDisplay">
         <div class="info-section">
@@ -61,4 +92,7 @@
         </div>
     </section>
 </main>
+<script src="{% static 'js/blackFridayModal.js' %}"></script>
+
+
 {% endblock %}
