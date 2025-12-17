@@ -85,12 +85,27 @@
         object-fit: cover; /* Clave: recorta la imagen para llenar el hueco sin deformar */
         position: absolute;
     }
+    .forgot-password {
+  margin-top: 14px;
+  text-align: center;
+  font-size: 0.9rem;
+}
 
+.forgot-password a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.forgot-password a:hover {
+  text-decoration: underline;
+}
     /* Responsive: En móviles ocultamos la foto */
     @media (max-width: 768px) {
         .image-side {
             display: none;
         }
     }
+
+
 
     
