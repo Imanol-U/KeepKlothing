@@ -11,6 +11,8 @@ import json
 from .models import Producto, ProductoCompra, Categoria, Usuario, Marca, Resenia, Compra
 from .models import Producto, ProductoCompra, Categoria, Usuario, Marca, Resenia
 from .forms import ReviewForm
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -201,3 +203,9 @@ def tramitar_pedido(request):
             )
     return JsonResponse({'success': True, 'message': '¡Compra realizada con éxito!'})
 
+
+@login_required
+def profile(request):
+    # Aquí en el futuro cargarás los pedidos reales de la base de datos
+    # orders = Order.objects.filter(user=request.user)
+    return render(request, 'profile.html')

@@ -30,7 +30,7 @@
                 <li><a href="{% url 'filters' 'Pantalones' %}">Pantalones</a></li>
                 <li><a href="{% url 'filters' 'Calzado' %}">Calzado</a></li>
             </ul>
-            
+
             <div id="actions">
                 <div id="searchBar">
                     <a href="" id="search-icon">
@@ -42,7 +42,7 @@
                     </a>
                     <input type="text" placeholder="Buscar un producto...">
                 </div>
-                
+
                 <a href="{% url 'cart' %}" id="cart-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor"
                         class="bi bi-cart" viewBox="0 0 16 16">
@@ -56,12 +56,15 @@
                         
                         <div style="display: flex; align-items: center; gap: 8px; margin-right: 15px;">
                             <i class="bi bi-person-circle" style="font-size: 1.3rem;"></i>
-                            <span style="font-weight: bold; font-family: 'Montserrat', sans-serif;">{{ user.username|upper }}</span>
+                            
+                            <a href="{% url 'profile' %}" style="font-weight: bold; font-family: 'Montserrat', sans-serif; text-decoration: none; color: inherit; cursor: pointer;">
+                                {{ user.username|upper }}
+                            </a>
                         </div>
                         
                         <form action="{% url 'logout' %}" method="post" style="margin: 0;">
                             {% csrf_token %}
-                            <button type="submit" style="background: none; border: none; cursor: pointer; text-decoration: underline; color: #666; font-family: 'Roboto', sans-serif;">
+                            <button type="submit" style="background: none; border: none; cursor: pointer; text-decoration: underline; color: #666; font-family: 'Roboto', sans-serif; font-size: 0.9rem;">
                                 Salir
                             </button>
                         </form>
@@ -70,11 +73,11 @@
                 {% else %}
                     <a href="{% url 'login' %}" id="sign-in-btn">Iniciar Sesión</a>
                 {% endif %}
-                
+
             </div>
         </nav>
     </header>
-    
+
     {% block content %}
     {% endblock %}
     

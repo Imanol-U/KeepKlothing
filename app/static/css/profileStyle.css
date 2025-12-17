@@ -1,0 +1,112 @@
+
+
+    .dashboard-container {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 0 20px;
+        display: grid;
+        grid-template-columns: 1fr 3fr; /* Columna izq pequeña, derecha grande */
+        gap: 30px;
+        min-height: 60vh;
+    }
+
+    /* BARRA LATERAL (IZQUIERDA) */
+    .sidebar {
+        background: #f8f9fa;
+        padding: 25px;
+        border-radius: 8px;
+        height: fit-content;
+    }
+
+    .user-header {
+        text-align: center;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 20px;
+    }
+
+    .user-header i {
+        font-size: 4rem;
+        color: #333;
+    }
+
+    .user-header h3 {
+        font-family: 'Archivo Black', sans-serif;
+        margin-top: 10px;
+        font-size: 1.2rem;
+    }
+
+    .info-group {
+        margin-bottom: 20px;
+    }
+
+    .info-group label {
+        font-weight: bold;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.85rem;
+        color: #666;
+        display: block;
+    }
+
+    .info-group p {
+        font-family: 'Roboto', sans-serif;
+        color: #000;
+        margin: 0;
+    }
+
+    /* CONTENIDO PRINCIPAL (DERECHA) */
+    .main-content h2 {
+        font-family: 'Archivo Black', sans-serif;
+        margin-bottom: 20px;
+        font-size: 1.8rem;
+    }
+
+    .empty-state {
+        background: #fff;
+        border: 1px dashed #ccc;
+        padding: 40px;
+        text-align: center;
+        border-radius: 8px;
+        color: #777;
+    }
+
+    /* Tabla de Pedidos */
+    .table-container {
+        overflow-x: auto;
+    }
+    
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 30px;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    th {
+        background-color: #000;
+        color: #fff;
+        padding: 12px;
+        text-align: left;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.9rem;
+    }
+
+    td {
+        padding: 12px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .status-badge {
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        font-weight: bold;
+    }
+
+    .delivered { background-color: #d1e7dd; color: #0f5132; }
+    .shipped { background-color: #cff4fc; color: #055160; }
+    .processing { background-color: #fff3cd; color: #664d03; }
+
+    @media (max-width: 768px) {
+        .dashboard-container { grid-template-columns: 1fr; }
+    }

@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extraCss %}
+    <link rel="stylesheet" href="{% static 'css/profileStyle.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    
+    <div class="sidebar">
+        <div class="user-header">
+            <i class="bi bi-person-circle"></i>
+            <h3>Hola, {{ user.username|title }}</h3>
+        </div>
+
+        <div class="info-group">
+            <label>Email:</label>
+            <p>{{ user.email|default:"No especificado" }}</p>
+        </div>
+
+        <div class="info-group">
+            <label>Miembro desde:</label>
+            <p>{{ user.date_joined|date:"d M Y" }}</p>
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid #ddd; margin: 20px 0;">
+
+        <div class="info-group">
+            <label>Dirección de Envío predeterminada:</label>
+            <p>
+                Calle Mayor 12, 3ºA<br>
+                20003, Donostia<br>
+                Gipuzkoa, España
+            </p>
+            <a href="#" style="font-size: 0.8rem; text-decoration: underline; color: #666;">Editar dirección</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <h2>Mis Pedidos Recientes</h2>
+        
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nº Pedido</th>
+                        <th>Fecha</th>
+                        <th>Estado</th>
+                        <th>Total</th>
+                        <th>Detalles</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#KK-2024-001</td>
+                        <td>15 Oct 2023</td>
+                        <td><span class="status-badge delivered">Entregado</span></td>
+                        <td>59.90€</td>
+                        <td><a href="#">Ver</a></td>
+                    </tr>
+                    <tr>
+                        <td>#KK-2024-002</td>
+                        <td>02 Dic 2023</td>
+                        <td><span class="status-badge shipped">Enviado</span></td>
+                        <td>120.50€</td>
+                        <td><a href="#">Ver</a></td>
+                    </tr>
+                    <tr>
+                        <td>#KK-2024-009</td>
+                        <td>Hoy</td>
+                        <td><span class="status-badge processing">En Proceso</span></td>
+                        <td>35.00€</td>
+                        <td><a href="#">Ver</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="margin-top: 40px;">
+            <h3 style="font-family: 'Montserrat', sans-serif;">¿Necesitas ayuda?</h3>
+            <p>Si tienes problemas con algún pedido, contáctanos en <a href="mailto:soporte@keepklothing.com">soporte@keepklothing.com</a>.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
