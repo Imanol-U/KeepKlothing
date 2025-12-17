@@ -200,3 +200,4 @@ def tramitar_pedido(request):
                 precio_unitario=detail['precio_unitario']
             )
     return JsonResponse({'success': True, 'message': '¡Compra realizada con éxito!'})
+

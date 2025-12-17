@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+    <link rel="stylesheet" href="{% static 'css/loginStyle.css' %}">
+{% block extraCss %}
+
+{% endblock %}
+
+{% block content %}
+<div class="login-wrapper">
+    
+    <div class="login-side">
+        <div class="form-box">
+            <h2>Bienvenido</h2>
+            <p>Introduce tus credenciales para acceder.</p>
+
+            <form method="post">
+                {% csrf_token %}
+                
+                {% if form.errors %}
+                    <p style="color: red; font-size: 0.9rem;">Usuario o contraseña incorrectos.</p>
+                {% endif %}
+
+                <div class="input-group">
+                    <label for="id_username">Usuario</label>
+                    <input type="text" name="username" id="id_username" placeholder="Nombre de usuario" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="id_password">Contraseña</label>
+                    <input type="password" name="password" id="id_password" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" class="btn-login">INICIAR SESIÓN</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="image-side">
+        <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=2000&auto=format&fit=crop" alt="Login Image">
+    </div>
+
+</div>
+{% endblock %}

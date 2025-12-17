@@ -1,0 +1,96 @@
+
+    /* Estructura principal partida en dos */
+    .login-wrapper {
+        display: flex;
+        width: 100%;
+        min-height: 80vh; /* Altura mínima para que se vea bien */
+    }
+
+    /* --- IZQUIERDA: Formulario (50%) --- */
+    .login-side {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 40px;
+        background-color: #fff;
+    }
+
+    .form-box {
+        width: 100%;
+        max-width: 380px; /* Ancho máximo para que no se desparrame */
+    }
+
+    .form-box h2 {
+        font-family: 'Archivo Black', sans-serif;
+        font-size: 2rem;
+        margin-bottom: 10px;
+        color: #000;
+    }
+
+    .form-box p {
+        font-family: 'Roboto', sans-serif;
+        color: #666;
+        margin-bottom: 30px;
+    }
+
+    .input-group {
+        margin-bottom: 20px;
+    }
+
+    .input-group label {
+        display: block;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 600;
+        margin-bottom: 5px;
+        font-size: 0.9rem;
+    }
+
+    .input-group input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    .btn-login {
+        width: 100%;
+        padding: 15px;
+        background-color: #000;
+        color: #fff;
+        border: none;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 700;
+        cursor: pointer;
+        margin-top: 10px;
+        transition: background 0.3s;
+    }
+
+    .btn-login:hover {
+        background-color: #333;
+    }
+
+    /* --- DERECHA: Imagen (50%) --- */
+    .image-side {
+        flex: 1;
+        position: relative;
+        background-color: #f0f0f0;
+    }
+
+    .image-side img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Clave: recorta la imagen para llenar el hueco sin deformar */
+        position: absolute;
+    }
+
+    /* Responsive: En móviles ocultamos la foto */
+    @media (max-width: 768px) {
+        .image-side {
+            display: none;
+        }
+    }
+
+    
